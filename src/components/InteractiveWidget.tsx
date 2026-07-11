@@ -109,10 +109,34 @@ export default function InteractiveWidget() {
       <div className="container">
         <div className={styles.header}>
           <span className={styles.subtitle}>Monte seu Projeto</span>
-          <h2 className={styles.title}>Simule a sua ideia de solução</h2>
+          <h2 className={styles.title}>Tem uma ideia? Eu tiro do papel pra você</h2>
           <p className={styles.desc}>
-            Selecione a solução que seu pequeno negócio precisa, ative os recursos e veja uma estimativa justa e a tecnologia recomendada.
+            Veja abaixo como transformamos o seu plano em realidade estruturada e, em seguida, simule as funcionalidades do seu projeto.
           </p>
+        </div>
+
+        {/* Process Flow */}
+        <div className={styles.flowGrid}>
+          <div className={`glass-card ${styles.flowStep}`}>
+            <div className={styles.stepNum}>01</div>
+            <h4 className={styles.stepTitle}>Estudo & Alinhamento</h4>
+            <p className={styles.stepDesc}>Entendemos a rotina do seu negócio e desenhamos um escopo sob medida que cabe no seu bolso.</p>
+          </div>
+          <div className={`glass-card ${styles.flowStep}`}>
+            <div className={styles.stepNum}>02</div>
+            <h4 className={styles.stepTitle}>Design & Protótipo</h4>
+            <p className={styles.stepDesc}>Criamos o desenho das telas focando em facilidade e rapidez extrema de cliques no celular.</p>
+          </div>
+          <div className={`glass-card ${styles.flowStep}`}>
+            <div className={styles.stepNum}>03</div>
+            <h4 className={styles.stepTitle}>Desenvolvimento</h4>
+            <p className={styles.stepDesc}>Programamos seu software com integrações oficiais (WhatsApp, Bling ERP) e inteligências artificiais.</p>
+          </div>
+          <div className={`glass-card ${styles.flowStep}`}>
+            <div className={styles.stepNum}>04</div>
+            <h4 className={styles.stepTitle}>Entrega & Suporte</h4>
+            <p className={styles.stepDesc}>Colocamos o seu sistema no ar de forma estável e oferecemos suporte contínuo de pós-lançamento.</p>
+          </div>
         </div>
 
         <div className={styles.container}>

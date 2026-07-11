@@ -302,3 +302,57 @@
   text-align: center;
   line-height: 1.4;
 }
+
+/* Process flow timeline steps */
+.flowGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+@media (max-width: 992px) {
+  .flowGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (max-width: 550px) {
+  .flowGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.flowStep {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+
+.stepNum {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.8rem;
+  background: var(--purple-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0.85;
+}
+
+.stepTitle {
+  font-size: 1.05rem;
+  color: white;
+  font-weight: 600;
+}
+
+.stepDesc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
