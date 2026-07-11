@@ -3,6 +3,7 @@ import Hero from './components/Hero';
 import QuotesMarquee from './components/QuotesMarquee';
 import Stats from './components/Stats';
 import Services from './components/Services';
+import Integrations from './components/Integrations';
 import InteractiveWidget from './components/InteractiveWidget';
 import Portfolio from './components/Portfolio';
 import Pricing from './components/Pricing';
@@ -18,6 +19,7 @@ export default function App() {
         <QuotesMarquee />
         <Stats />
         <Services />
+        <Integrations />
         <InteractiveWidget />
         <Portfolio />
         <Pricing />
