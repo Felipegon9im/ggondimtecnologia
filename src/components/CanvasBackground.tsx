@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 export default function CanvasBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const frameIndexRef = useRef<number>(0);
-  const totalFrames = 766; // 00000 to 00765
+  const totalFrames = 900; // 00000 to 00899
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -94,7 +94,7 @@ export default function CanvasBackground() {
         height: '100vh',
         zIndex: -2,
         pointerEvents: 'none',
-        opacity: 0.16, // Subtle texture transparency
+        opacity: 0.35, // Balanced visible texture transparency
       }}
     />
   );
