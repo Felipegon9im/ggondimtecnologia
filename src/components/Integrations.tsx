@@ -19,7 +19,7 @@ export default function Integrations() {
               </h2>
               
               <p className={styles.desc}>
-                Esqueça o trabalho manual de atualizar preços e estoques em vários painéis diferentes. Desenvolvemos o seu e-commerce integrado diretamente com o <strong>Bling ERP API</strong>. 
+                Esqueça o trabalho manual de atualizar preços e estoques em vários painéis diferentes. Desenvolvo o seu e-commerce integrado diretamente com o <strong>Bling ERP API</strong>. 
                 Venda em massa em todos os grandes canais digitais do país e gerencie tudo a partir de um único estoque unificado.
               </p>
               

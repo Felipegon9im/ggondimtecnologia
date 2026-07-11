@@ -50,7 +50,7 @@ export default function Stats() {
             </div>
           </div>
 
-          {/* Card 2: Nossa Origem */}
+          {/* Card 2: Minha Origem */}
           <div className={`glass-card ${styles.aboutCard}`}>
             <div className={styles.cardFlex}>
               <div className={styles.imageCol}>
@@ -61,11 +61,11 @@ export default function Stats() {
                 />
               </div>
               <div className={styles.textCol}>
-                <span className={styles.aboutSubtitle}>Nossa Origem</span>
+                <span className={styles.aboutSubtitle}>Minha Origem</span>
                 <h3 className={styles.aboutTitle}>Ilha do Silício</h3>
                 <p className={styles.aboutRole}>Florianópolis - SC</p>
                 <p className={styles.aboutDesc}>
-                  Nossas raízes estão em Florianópolis, um dos principais polos de tecnologia e inovação do Brasil. Daqui, atuamos de forma totalmente remota, combinando a cultura criativa catarinense com engenharia de software de ponta para atender e digitalizar empresas em todo o país.
+                  Minhas raízes estão em Florianópolis, um dos principais polos de tecnologia e inovação do Brasil. Daqui, atuo de forma totalmente remota, combinando a cultura criativa catarinense com engenharia de software de ponta para atender e digitalizar empresas em todo o país.
                 </p>
               </div>
             </div>

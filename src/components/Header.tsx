@@ -46,7 +46,7 @@ export default function Header() {
           <div className={styles.actions}>
             <a href="#contato" className="btn btn-primary" style={{ padding: '8px 20px', fontSize: '0.9rem' }}>
               <MessageSquare size={16} />
-              Fale Conosco
+              Fale Comigo
             </a>
           </div>
 
@@ -78,7 +78,7 @@ export default function Header() {
         </nav>
         <a href="#contato" className="btn btn-primary" style={{ width: '100%', marginTop: '20px' }} onClick={toggleMobileMenu}>
           <MessageSquare size={18} />
-          Fale Conosco
+          Fale Comigo
         </a>
       </div>
     </>

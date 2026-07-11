@@ -72,9 +72,9 @@ export default function Portfolio() {
       <div className="container">
         <div className={styles.header}>
           <span className={styles.subtitle}>Portfólio</span>
-          <h2 className={styles.title}>Nossas Soluções Entregues</h2>
+          <h2 className={styles.title}>Soluções Entregues</h2>
           <p className={styles.desc}>
-            Veja exemplos práticos de projetos que desenvolvemos com foco em impulsionar o faturamento e automatizar a rotina de pequenos e médios negócios.
+            Veja exemplos práticos de projetos que desenvolvi com foco em impulsionar o faturamento e automatizar a rotina de pequenos e médios negócios.
           </p>
         </div>
 

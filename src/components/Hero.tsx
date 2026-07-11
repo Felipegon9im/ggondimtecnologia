@@ -61,7 +61,7 @@ export default function Hero() {
           </h1>
           
           <p className={styles.description}>
-            Estudamos a realidade do seu negócio para criar a melhor estratégia digital. Desenvolvemos soluções eficientes e com excelente custo-benefício para pequenas e médias empresas crescerem.
+            Estudo a realidade do seu negócio para criar a melhor estratégia digital. Desenvolvo soluções eficientes e com excelente custo-benefício para pequenas e médias empresas crescerem.
           </p>
           
           <div className={styles.ctas}>
@@ -70,7 +70,7 @@ export default function Hero() {
               <ArrowRight size={18} />
             </a>
             <a href="#solucoes" className="btn btn-secondary">
-              Nossas Soluções
+              Ver Soluções
             </a>
           </div>
         </div>

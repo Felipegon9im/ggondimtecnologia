@@ -111,7 +111,7 @@ export default function InteractiveWidget() {
           <span className={styles.subtitle}>Monte seu Projeto</span>
           <h2 className={styles.title}>Tem uma ideia? Eu tiro do papel pra você</h2>
           <p className={styles.desc}>
-            Veja abaixo como transformamos o seu plano em realidade estruturada e, em seguida, simule as funcionalidades do seu projeto.
+            Veja abaixo como transformo o seu plano em realidade estruturada e, em seguida, simule as funcionalidades do seu projeto.
           </p>
         </div>
 

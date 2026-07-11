@@ -41,7 +41,7 @@ export default function Footer() {
           <div className={styles.contactInfo}>
             <h2 className={styles.contactTitle}>Vamos criar algo incrível juntos?</h2>
             <p className={styles.contactDesc}>
-              Entre em contato conosco para discutir a sua ideia de projeto, alocação de squads ou integração de sistemas de Inteligência Artificial. Nossa equipe técnica responderá em menos de 24 horas.
+              Entre em contato para discutir a sua ideia de projeto, automações ou integração de sistemas de Inteligência Artificial. Responderei em menos de 24 horas.
             </p>
 
             <div className={styles.infoList}>
@@ -85,7 +85,7 @@ export default function Footer() {
                 </div>
                 <h3 style={{ fontSize: '1.25rem', color: 'white' }}>Mensagem Enviada!</h3>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', maxWidth: '300px' }}>
-                  Agradecemos seu contato. Nossa equipe entrará em contato comercial muito em breve.
+                  Agradeço seu contato. Entrarei em contato comercial muito em breve.
                 </p>
               </div>
             ) : (
@@ -186,7 +186,7 @@ export default function Footer() {
               <li className={styles.linkItem}><a href="#solucoes">Software Sob Medida</a></li>
               <li className={styles.linkItem}><a href="#solucoes">Inteligência Artificial</a></li>
               <li className={styles.linkItem}><a href="#solucoes">DevOps & Cloud</a></li>
-              <li className={styles.linkItem}><a href="#solucoes">Squads Dedicados</a></li>
+              <li className={styles.linkItem}><a href="#solucoes">Integrações ERP</a></li>
             </ul>
           </div>
 
@@ -204,9 +204,9 @@ export default function Footer() {
           <div className={styles.linksCol}>
             <span className={styles.colTitle}>Empresa</span>
             <ul className={styles.linksList}>
-              <li className={styles.linkItem}><a href="#stats">Sobre Nós</a></li>
-              <li className={styles.linkItem}><a href="#contato">Carreiras</a></li>
-              <li className={styles.linkItem}><a href="#contato">Fale Conosco</a></li>
+              <li className={styles.linkItem}><a href="#stats">Sobre Mim</a></li>
+              <li className={styles.linkItem}><a href="#widget">Simular Projeto</a></li>
+              <li className={styles.linkItem}><a href="#contato">Fale Comigo</a></li>
             </ul>
           </div>
         </div>
