@@ -100,15 +100,22 @@ export default function Portfolio() {
                   className={styles.projectImage} 
                 />
               </div>
-              <div className={styles.cardContent}>
+              <div className={styles.cardContent} style={{ display: 'flex', flexDirection: 'column', height: 'calc(100% - 200px)' }}>
                 <span className={styles.projectBadge}>{project.categoryLabel}</span>
                 <h3 className={styles.projectTitle}>{project.title}</h3>
-                <p className={styles.projectDesc}>{project.desc}</p>
-                <div className={styles.techList}>
+                <p className={styles.projectDesc} style={{ flexGrow: 1 }}>{project.desc}</p>
+                <div className={styles.techList} style={{ marginBottom: '16px' }}>
                   {project.techs.map((tech, idx) => (
                     <span key={idx} className={styles.techBadge}>{tech}</span>
                   ))}
                 </div>
+                <a 
+                  href={`/${project.title.toLowerCase().replace(/\s+/g, '')}.html`} 
+                  className="btn btn-secondary"
+                  style={{ width: '100%', fontSize: '0.85rem', padding: '10px 0', textAlign: 'center' }}
+                >
+                  Testar Agora
+                </a>
               </div>
             </div>
           ))}

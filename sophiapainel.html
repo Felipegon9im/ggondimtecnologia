@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sophia Painel - Painel Administrativo sob Medida | G&G Tecnologia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #030611;
+      --primary: #FF4D00;
+      --secondary: #FFA000;
+      --text-primary: #F3F4F6;
+      --text-secondary: #9CA3AF;
+      --text-muted: #6B7280;
+      --font-sans: 'Inter', sans-serif;
+      --font-heading: 'Outfit', sans-serif;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -2;
+      pointer-events: none;
+      opacity: 0.35;
+    }
+
+    .header {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: white;
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .logo span {
+      color: var(--primary);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+      font-family: var(--font-sans);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #FF4D00 0%, #FFA000 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(255, 77, 0, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 77, 0, 0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .main-content {
+      flex: 1;
+      width: 100%;
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    @media (max-width: 992px) {
+      .main-content {
+        grid-template-columns: 1fr;
+        margin: 40px auto;
+        gap: 40px;
+      }
+    }
+
+    .left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .badge-container {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-accent {
+      background: rgba(255, 77, 0, 0.1);
+      color: var(--primary);
+      border: 1px solid rgba(255, 77, 0, 0.2);
+    }
+
+    .badge-windows {
+      background: rgba(0, 164, 239, 0.1);
+      color: #00a4ef;
+      border: 1px solid rgba(0, 164, 239, 0.2);
+    }
+
+    .title {
+      font-family: var(--font-heading);
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: white;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .title span {
+      background: linear-gradient(135deg, #FF4D00 0%, #FFA000 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    @media (max-width: 768px) {
+      .title {
+        font-size: 2.5rem;
+      }
+    }
+
+    .description {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    .native-section {
+      padding: 20px;
+      background: rgba(0, 164, 239, 0.05);
+      border-left: 4px solid #00a4ef;
+      border-radius: 0 12px 12px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .native-title {
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .action-title {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .btn-download {
+      width: 100%;
+      padding: 16px;
+      font-size: 1.05rem;
+    }
+
+    .btn-test {
+      width: 100%;
+      padding: 16px;
+      font-size: 1.05rem;
+    }
+
+    .download-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: -8px;
+    }
+
+    .features-grid {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .feature-icon {
+      color: var(--secondary);
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .feature-text {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--text-secondary);
+    }
+
+    .feature-text strong {
+      color: white;
+    }
+
+    .tech-tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tech-tag {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .footer {
+      width: 100%;
+      text-align: center;
+      padding: 40px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+
+  <header class="header">
+    <a href="/" class="logo">
+      G&G <span>Tecnologia</span>
+    </a>
+    <a href="/" class="btn btn-secondary">
+      Voltar ao Início
+    </a>
+  </header>
+
+  <main class="main-content">
+    <div class="left-col">
+      <div class="badge-container">
+        <span class="badge badge-accent">Sistema Ativo</span>
+        <span class="badge badge-windows">
+          <svg width="12" height="12" viewBox="0 0 23 23" fill="currentColor" style="margin-right: 4px;">
+            <path d="M0 3.449L9.75 2.1v9.45H0V3.449zM0 12.45h9.75v9.45L0 20.551v-8.102zM10.8 1.95L23 0.2v11.35H10.8V1.95zM10.8 12.45H23v11.35l-12.2-1.75v-9.4z"/>
+          </svg>
+          Nativo no Windows
+        </span>
+      </div>
+
+      <h1 class="title">
+        <span>Sophia Painel</span><br>
+        Dashboard Corporativo
+      </h1>
+
+      <p class="description">
+        O <strong>Sophia Painel</strong> é um painel administrativo sob medida projetado para centralizar as vendas, faturamento, fluxos financeiros e controle de clientes de pequenos e médios negócios em uma única interface limpa e eficiente.
+      </p>
+
+      <div class="native-section">
+        <div class="native-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+          Segurança e Performance Nativa no Windows
+        </div>
+        <p class="feature-text" style="margin: 0;">
+          A arquitetura nativa para desktop do Sophia Painel garante proteção total dos seus dados confidenciais e excelente performance de gráficos 3D. Esqueça carregamentos lentos de navegadores: opere suas planilhas de forma rápida e segura direto na sua área de trabalho.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-item">
+          <span class="feature-icon">✓</span>
+          <p class="feature-text"><strong>Gráficos e Métricas Financeiras:</strong> Acompanhamento gráfico detalhado de faturamento diário, custos operacionais e evolução de vendas de forma simples.</p>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">✓</span>
+          <p class="feature-text"><strong>Gestão de CRM Completa:</strong> Cadastro detalhado de clientes, histórico de compras, ticket médio e geração automática de lembretes.</p>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">✓</span>
+          <p class="feature-text"><strong>Níveis de Permissões:</strong> Proteja seus dados corporativos limitando o acesso a informações financeiras sensíveis apenas a usuários autorizados.</p>
+        </div>
+      </div>
+
+      <div class="tech-tags">
+        <span class="tech-tag">React / Vite</span>
+        <span class="tech-tag">CSS Modules</span>
+        <span class="tech-tag">Firebase Firestore</span>
+        <span class="tech-tag">Electron Wrapper</span>
+        <span class="tech-tag">ChartJS</span>
+      </div>
+    </div>
+
+    <div class="right-col">
+      <div class="glass-card">
+        <h2 class="action-title">Experimente o Painel</h2>
+        <p class="feature-text" style="margin-bottom: 8px;">
+          Instale a versão estável do Sophia Painel e tenha controle total sobre a saúde financeira do seu negócio.
+        </p>
+
+        <a href="/" class="btn btn-primary btn-test" onclick="alert('Solicitação de teste recebida! Entrarei em contato para agendar uma demonstração local do Sophia Painel no Windows.'); return false;">
+          Testar Agora
+        </a>
+
+        <button class="btn btn-secondary btn-download" onclick="alert('O instalador nativo (.msi) estará disponível para download direto em breve.');">
+          Baixar para Windows (MSI)
+        </button>
+        <span class="download-note">Requer Windows 10 ou superior</span>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    &copy; 2026 G&G Tecnologia. Todos os direitos reservados.
+  </footer>
+
+  <script>
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    const totalFrames = 447;
+    const imagesCache = [];
+    const maxCache = 120;
+    let frameIndex = 0;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Preload first 120 frames
+    for (let i = 0; i < 120; i++) {
+      const img = new Image();
+      const pad = String(i).padStart(5, '0');
+      img.src = `/frames/PinGrab_1783740406596/PinGrab_1783740406596_${pad}.png`;
+      imagesCache[i] = img;
+    }
+
+    function preloadNextFrames(startIndex) {
+      for (let i = 0; i < maxCache; i++) {
+        const index = (startIndex + i) % totalFrames;
+        if (!imagesCache[index]) {
+          const img = new Image();
+          const pad = String(index).padStart(5, '0');
+          img.src = `/frames/PinGrab_1783740406596/PinGrab_1783740406596_${pad}.png`;
+          imagesCache[index] = img;
+        }
+      }
+      if (startIndex > totalFrames - 200) {
+        for (let i = 0; i < 80; i++) {
+          if (!imagesCache[i]) {
+            const img = new Image();
+            const pad = String(i).padStart(5, '0');
+            img.src = `/frames/PinGrab_1783740406596/PinGrab_1783740406596_${pad}.png`;
+            imagesCache[i] = img;
+          }
+        }
+      }
+    }
+
+    let lastTime = 0;
+    const fps = 24;
+    const interval = 1000 / fps;
+
+    function render(time) {
+      requestAnimationFrame(render);
+      if (time - lastTime < interval) return;
+      lastTime = time;
+
+      preloadNextFrames(frameIndex);
+      const img = imagesCache[frameIndex];
+      if (img && img.complete) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const imgRatio = img.width / img.height;
+        const canvasRatio = canvas.width / canvas.height;
+        let drawWidth = canvas.width;
+        let drawHeight = canvas.height;
+        let offsetX = 0;
+        let offsetY = 0;
+
+        if (canvasRatio > imgRatio) {
+          drawHeight = canvas.width / imgRatio;
+          offsetY = (canvas.height - drawHeight) / 2;
+        } else {
+          drawWidth = canvas.height * imgRatio;
+          offsetX = (canvas.width - drawWidth) / 2;
+        }
+        ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        frameIndex = (frameIndex + 1) % totalFrames;
+      }
+    }
+    requestAnimationFrame(render);
+  </script>
+</body>
+</html>
