@@ -1,0 +1,81 @@
+.marqueeContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  /* Sunset orange gradient to match photo background */
+  background: linear-gradient(90deg, #FF4D00 0%, #FFA000 100%);
+  padding: 8px 0;
+  height: 36px;
+  z-index: 1001; /* Above the header menu */
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(255, 77, 0, 0.2);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Gradient fade masks on the edges matching the orange banner background */
+.marqueeContainer::before,
+.marqueeContainer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 100px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.marqueeContainer::before {
+  left: 0;
+  background: linear-gradient(to right, #FF4D00 0%, transparent 100%);
+}
+
+.marqueeContainer::after {
+  right: 0;
+  background: linear-gradient(to left, #FFA000 0%, transparent 100%);
+}
+
+.marqueeTrack {
+  display: flex;
+  animation: scrollMarquee 150s linear infinite;
+  width: max-content;
+  gap: 50px;
+}
+
+.marqueeTrack:hover {
+  animation-play-state: paused;
+}
+
+.quoteItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 700;
+  /* Dark text on bright background for high readability and professional contrast */
+  color: #030611;
+}
+
+.quoteText {
+  color: #030611;
+  letter-spacing: 0.01em;
+}
+
+.starIcon {
+  color: #FFFFFF;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.6));
+}
+
+@keyframes scrollMarquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}

@@ -1,0 +1,259 @@
+.footerSection {
+  background: #04030a;
+  border-top: 1px solid var(--border-color);
+  position: relative;
+  padding: 80px 0 35px;
+}
+
+.contactGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 60px;
+  margin-bottom: 80px;
+}
+
+@media (max-width: 992px) {
+  .contactGrid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.contactTitle {
+  font-size: 2.5rem;
+  letter-spacing: -0.02em;
+}
+
+.contactDesc {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.infoList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 12px;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.iconWrapper {
+  width: 40px;
+  height: 40px;
+  background: rgba(124, 58, 237, 0.1);
+  color: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+}
+
+.infoText {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoLabel {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.infoValue {
+  font-size: 0.95rem;
+  color: white;
+  font-weight: 500;
+}
+
+/* Contact Form */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 32px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 480px) {
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inputLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.input {
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: white;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  outline: none;
+  transition: all var(--transition-fast);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.input:focus {
+  border-color: var(--secondary);
+  background: rgba(6, 182, 212, 0.03);
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.15);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Footer Bottom Links Grid */
+.linksGrid {
+  display: grid;
+  grid-template-columns: 1.5fr repeat(3, 1fr);
+  gap: 40px;
+  padding-top: 60px;
+  border-top: 1px solid var(--border-color);
+  margin-bottom: 60px;
+}
+
+@media (max-width: 768px) {
+  .linksGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .linksGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.brandCol {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.logo {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.4rem;
+  letter-spacing: -0.03em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logoIcon {
+  color: var(--primary);
+}
+
+.logoSpan {
+  background: var(--cyan-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brandDesc {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  max-width: 260px;
+}
+
+.linksCol {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.colTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.linksList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.linkItem a {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.linkItem a:hover {
+  color: white;
+}
+
+/* Footer Bottom copyright */
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 30px;
+  border-top: 1px solid var(--border-color);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+@media (max-width: 600px) {
+  .bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.copyright {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.socials {
+  display: flex;
+  gap: 16px;
+}
+
+.socialIcon {
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.socialIcon:hover {
+  color: var(--primary);
+}
