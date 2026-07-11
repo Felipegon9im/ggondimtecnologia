@@ -23,7 +23,16 @@ export default function CanvasBackground() {
     const imagesCache: HTMLImageElement[] = [];
     const maxCache = 120; // Cache next 120 frames dynamically
 
+    // Preload first 120 frames immediately on mount for instant smooth playback
+    for (let i = 0; i < 120; i++) {
+      const img = new Image();
+      const pad = String(i).padStart(5, '0');
+      img.src = `/frames/PinGrab_1783740406596/PinGrab_1783740406596_${pad}.png`;
+      imagesCache[i] = img;
+    }
+
     const preloadNextFrames = (startIndex: number) => {
+      // 1. Regular rolling buffer
       for (let i = 0; i < maxCache; i++) {
         const index = (startIndex + i) % totalFrames;
         if (!imagesCache[index]) {
@@ -31,6 +40,18 @@ export default function CanvasBackground() {
           const pad = String(index).padStart(5, '0');
           img.src = `/frames/PinGrab_1783740406596/PinGrab_1783740406596_${pad}.png`;
           imagesCache[index] = img;
+        }
+      }
+
+      // 2. Preemptively preload the start of the loop (frames 0-80) as we approach the end
+      if (startIndex > totalFrames - 200) {
+        for (let i = 0; i < 80; i++) {
+          if (!imagesCache[i]) {
+            const img = new Image();
+            const pad = String(i).padStart(5, '0');
+            img.src = `/frames/PinGrab_1783740406596/PinGrab_1783740406596_${pad}.png`;
+            imagesCache[i] = img;
+          }
         }
       }
     };
@@ -70,9 +91,10 @@ export default function CanvasBackground() {
         }
 
         ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        
+        // Only advance to the next frame once the current frame is successfully rendered
+        frameIndexRef.current = (currentIndex + 1) % totalFrames;
       }
-
-      frameIndexRef.current = (currentIndex + 1) % totalFrames;
     };
 
     animationId = requestAnimationFrame(render);
