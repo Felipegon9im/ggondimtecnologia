@@ -8,16 +8,21 @@ interface StatItem {
 }
 
 const statsData: StatItem[] = [
-  { number: '150+', label: 'Projetos Entregues' },
-  { number: '98%', label: 'Satisfação dos Clientes' },
-  { number: '10M+', label: 'Usuários Impactados' },
-  { number: '24/7', label: 'Suporte & Monitoramento' }
+  { number: 'MercadoPDV', label: 'Sistema de Vendas & PDV' },
+  { number: 'Sophia Painel', label: 'Painel Admin sob Medida' },
+  { number: 'Zap Flow', label: 'Automação & API WhatsApp' },
+  { number: 'Agenda Flow', label: 'Agendamento Online & ZAP' }
 ];
 
 export default function Stats() {
   return (
     <section id="stats" className={styles.statsSection}>
-      <div className={`container ${styles.grid}`}>
+      <div className={`container ${styles.sectionHeader}`}>
+        <span className={styles.sectionSubtitle}>Projetos Reais</span>
+        <h2 className={styles.sectionTitle}>Sistemas Ativos em Produção</h2>
+      </div>
+
+      <div className={`container ${styles.grid}`} style={{ marginBottom: '60px' }}>
         {statsData.map((stat, i) => (
           <div key={i} className={`glass-card ${styles.card}`}>
             <div className={styles.glow} />

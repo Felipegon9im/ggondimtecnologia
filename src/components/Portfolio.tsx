@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import styles from './Portfolio.module.css';
-import florianopolisImg from '../assets/florianopolis.jpg';
 
-type FilterType = 'all' | 'systems' | 'chatbots' | 'pages';
+type FilterType = 'all' | 'systems' | 'chatbots';
 
 interface Project {
   id: number;
@@ -20,39 +19,39 @@ export default function Portfolio() {
   const projects: Project[] = [
     {
       id: 1,
-      title: 'SaborOn - Cardápio Digital WhatsApp',
+      title: 'MercadoPDV',
       category: 'systems',
       categoryLabel: 'Sistemas Comerciais',
-      desc: 'Plataforma completa de cardápio interativo e carrinho de compras para hamburguerias e pizzarias, enviando pedidos já formatados direto no WhatsApp do estabelecimento.',
+      desc: 'Sistema de Frente de Caixa (PDV) e controle de estoque completo para mercados, mercearias e comércios locais, com foco em usabilidade e controle de caixa rápido.',
       image: '/menu_mockup.png',
-      techs: ['React.js', 'Node.js', 'WhatsApp API', 'MongoDB']
+      techs: ['React', 'TypeScript', 'Node.js', 'SQL Local']
     },
     {
       id: 2,
-      title: 'AtendeZAP - Chatbot WhatsApp com IA',
-      category: 'chatbots',
-      categoryLabel: 'Inteligência Artificial',
-      desc: 'Robô de atendimento inteligente integrado à API oficial do WhatsApp. Responde FAQs, agenda consultas para clínicas e qualifica leads comerciais de forma natural.',
-      image: '/chatbot_mockup.png',
-      techs: ['Python', 'FastAPI', 'Gemini API', 'WhatsApp Cloud API']
+      title: 'Sophia Painel',
+      category: 'systems',
+      categoryLabel: 'Painéis Administrativos',
+      desc: 'Painel administrativo customizado e intuitivo para controle de faturamento, monitoramento de vendas internas e gestão financeira de pequenos negócios.',
+      image: '/scheduler_mockup.png',
+      techs: ['React / Vite', 'CSS Modules', 'Firebase Firestore']
     },
     {
       id: 3,
-      title: 'Agendador Online - BeautyCalendar',
-      category: 'systems',
-      categoryLabel: 'Sistemas Comerciais',
-      desc: 'Sistema de agendamento online com grade de horários interativa em tempo real para salões de beleza, estéticas e estúdios. Conta com lembretes automáticos de agendamento.',
-      image: '/scheduler_mockup.png',
-      techs: ['React', 'TypeScript', 'Notificações ZAP', 'Firebase']
+      title: 'Zap Flow',
+      category: 'chatbots',
+      categoryLabel: 'Automações WhatsApp',
+      desc: 'Plataforma inteligente de disparos automáticos e integração de chatbots no WhatsApp para automatizar o funil de vendas, responder dúvidas e qualificar contatos.',
+      image: '/chatbot_mockup.png',
+      techs: ['Node.js', 'WhatsApp API', 'FastAPI', 'Gemini IA']
     },
     {
       id: 4,
-      title: 'Floripa Imóveis - Landing Page de Alta Conversão',
-      category: 'pages',
-      categoryLabel: 'Landing Pages',
-      desc: 'Landing page premium projetada para captar leads qualificados de alto padrão, otimizada com técnicas avançadas de SEO e Google Ads para atração de tráfego local.',
-      image: florianopolisImg,
-      techs: ['React / Vite', 'CSS Modules', 'SEO Meta', 'Google Analytics']
+      title: 'Agenda Flow',
+      category: 'systems',
+      categoryLabel: 'Agendadores Digitais',
+      desc: 'Sistema inteligente de agendamento online com calendário dinâmico em tempo real e envio de lembretes automáticos de confirmação de horários por WhatsApp.',
+      image: '/scheduler_mockup.png',
+      techs: ['React.js', 'Notificações ZAP', 'Node.js', 'Firebase']
     }
   ];
 
@@ -62,9 +61,8 @@ export default function Portfolio() {
 
   const filters: { value: FilterType; label: string }[] = [
     { value: 'all', label: 'Todos' },
-    { value: 'systems', label: 'Sistemas' },
-    { value: 'chatbots', label: 'Chatbots IA' },
-    { value: 'pages', label: 'Landing Pages' }
+    { value: 'systems', label: 'Sistemas & Painéis' },
+    { value: 'chatbots', label: 'Automações ZAP' }
   ];
 
   return (
