@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 export default function CanvasBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const frameIndexRef = useRef<number>(0);
-  const totalFrames = 900; // 00000 to 00899
+  const totalFrames = 447; // 00000 to 00446 (active animation frames)
 
   useEffect(() => {
     const canvas = canvasRef.current;
