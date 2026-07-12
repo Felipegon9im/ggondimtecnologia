@@ -71,7 +71,7 @@ export default function Footer() {
                 </div>
                 <div className={styles.infoText}>
                   <span className={styles.infoLabel}>Sede</span>
-                  <span className={styles.infoValue}>São Paulo, SP - Brasil</span>
+                  <span className={styles.infoValue}>Florianópolis, SC - Brasil</span>
                 </div>
               </div>
             </div>
