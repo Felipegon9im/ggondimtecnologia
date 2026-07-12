@@ -114,7 +114,7 @@ export default function Portfolio() {
                   className="btn btn-secondary"
                   style={{ width: '100%', fontSize: '0.85rem', padding: '10px 0', textAlign: 'center' }}
                 >
-                  Testar Agora
+                  Saiba Mais
                 </a>
               </div>
             </div>

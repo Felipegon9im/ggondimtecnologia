@@ -90,7 +90,7 @@ export default function Stats() {
               onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
               onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
             >
-              Testar Agora →
+              Saiba Mais →
             </a>
           </div>
         ))}
