@@ -37,6 +37,7 @@ export default function Header() {
           <nav className={styles.nav}>
             <a href="#solucoes" className={styles.navLink}>Serviços</a>
             <a href="#widget" className={styles.navLink}>Simulador de IA</a>
+            <a href="#tecnologias" className={styles.navLink}>Tecnologias</a>
             <a href="#stats" className={styles.navLink}>Sobre</a>
             <a href="#portfolio" className={styles.navLink}>Portfólio</a>
             <a href="#faq" className={styles.navLink}>FAQ</a>
@@ -70,6 +71,7 @@ export default function Header() {
         <nav className={styles.mobileNav}>
           <a href="#solucoes" className={styles.mobileNavLink} onClick={toggleMobileMenu}>Serviços</a>
           <a href="#widget" className={styles.mobileNavLink} onClick={toggleMobileMenu}>Simulador de IA</a>
+          <a href="#tecnologias" className={styles.mobileNavLink} onClick={toggleMobileMenu}>Tecnologias</a>
           <a href="#stats" className={styles.mobileNavLink} onClick={toggleMobileMenu}>Sobre</a>
           <a href="#portfolio" className={styles.mobileNavLink} onClick={toggleMobileMenu}>Portfólio</a>
           <a href="#faq" className={styles.mobileNavLink} onClick={toggleMobileMenu}>FAQ</a>

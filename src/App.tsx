@@ -6,6 +6,7 @@ import Services from './components/Services';
 import Integrations from './components/Integrations';
 import InteractiveWidget from './components/InteractiveWidget';
 import Portfolio from './components/Portfolio';
+import TechStack from './components/TechStack';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import CanvasBackground from './components/CanvasBackground';
@@ -46,6 +47,13 @@ export default function App() {
         <BibleDivider 
           verse="Tudo o que a sua mão achar para fazer, faça-o com todas as suas forças." 
           reference="Eclesiastes 9:10" 
+        />
+        
+        <TechStack />
+        
+        <BibleDivider 
+          verse="Seja forte e corajoso! Não se apavore nem desanime, pois o Senhor, o seu Deus, estará com você por onde você andar." 
+          reference="Josué 1:9" 
         />
         
         <InteractiveWidget />
