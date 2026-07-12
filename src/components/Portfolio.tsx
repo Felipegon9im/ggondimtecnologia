@@ -23,7 +23,7 @@ export default function Portfolio() {
       category: 'systems',
       categoryLabel: 'Sistemas Comerciais',
       desc: 'Sistema de Frente de Caixa (PDV) e controle de estoque completo para mercados, mercearias e comércios locais, com foco em usabilidade e controle de caixa rápido.',
-      image: '/menu_mockup.png',
+      image: '/mercadopdv_screenshot.png',
       techs: ['React', 'TypeScript', 'Node.js', 'SQL Local']
     },
     {
