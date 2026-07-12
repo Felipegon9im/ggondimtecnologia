@@ -32,7 +32,7 @@ export default function Portfolio() {
       category: 'systems',
       categoryLabel: 'Painéis Administrativos',
       desc: 'Painel administrativo customizado e intuitivo para controle de faturamento, monitoramento de vendas internas e gestão financeira de pequenos negócios.',
-      image: '/scheduler_mockup.png',
+      image: '/sophiapainel_screenshot.png',
       techs: ['React / Vite', 'CSS Modules', 'Firebase Firestore']
     },
     {
