@@ -39,7 +39,6 @@ export default function Header() {
             <a href="#widget" className={styles.navLink}>Simulador de IA</a>
             <a href="#stats" className={styles.navLink}>Sobre</a>
             <a href="#portfolio" className={styles.navLink}>Portfólio</a>
-            <a href="#planos" className={styles.navLink}>Planos</a>
             <a href="#faq" className={styles.navLink}>FAQ</a>
           </nav>
 
@@ -73,7 +72,6 @@ export default function Header() {
           <a href="#widget" className={styles.mobileNavLink} onClick={toggleMobileMenu}>Simulador de IA</a>
           <a href="#stats" className={styles.mobileNavLink} onClick={toggleMobileMenu}>Sobre</a>
           <a href="#portfolio" className={styles.mobileNavLink} onClick={toggleMobileMenu}>Portfólio</a>
-          <a href="#planos" className={styles.mobileNavLink} onClick={toggleMobileMenu}>Planos</a>
           <a href="#faq" className={styles.mobileNavLink} onClick={toggleMobileMenu}>FAQ</a>
         </nav>
         <a href="#contato" className="btn btn-primary" style={{ width: '100%', marginTop: '20px' }} onClick={toggleMobileMenu}>

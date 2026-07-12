@@ -6,7 +6,6 @@ import Services from './components/Services';
 import Integrations from './components/Integrations';
 import InteractiveWidget from './components/InteractiveWidget';
 import Portfolio from './components/Portfolio';
-import Pricing from './components/Pricing';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import CanvasBackground from './components/CanvasBackground';
@@ -57,13 +56,6 @@ export default function App() {
         />
         
         <Portfolio />
-        
-        <BibleDivider 
-          verse="Seja forte e corajoso! Não se apavore nem desanime, pois o Senhor, o seu Deus, estará com você por onde você andar." 
-          reference="Josué 1:9" 
-        />
-        
-        <Pricing />
         
         <BibleDivider 
           verse="Confie no Senhor de todo o seu coração e não se apoie em seu próprio entendimento; reconheça o Senhor em todos os seus caminhos, e ele endireitará as suas veredas." 

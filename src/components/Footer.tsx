@@ -196,7 +196,6 @@ export default function Footer() {
               <li className={styles.linkItem}><a href="#solucoes">Soluções</a></li>
               <li className={styles.linkItem}><a href="#widget">Simulador de Stack</a></li>
               <li className={styles.linkItem}><a href="#portfolio">Portfólio</a></li>
-              <li className={styles.linkItem}><a href="#planos">Planos</a></li>
               <li className={styles.linkItem}><a href="#faq">FAQ</a></li>
             </ul>
           </div>
