@@ -17,40 +17,7 @@ const statsData: StatItem[] = [
 export default function Stats() {
   return (
     <section id="stats" className={styles.statsSection}>
-      <div className={`container ${styles.sectionHeader}`}>
-        <span className={styles.sectionSubtitle}>Projetos Reais</span>
-        <h2 className={styles.sectionTitle}>Sistemas Ativos em Produção</h2>
-      </div>
-
-      <div className={`container ${styles.grid}`} style={{ marginBottom: '60px' }}>
-        {statsData.map((stat, i) => (
-          <div key={i} className={`glass-card ${styles.card}`}>
-            <div className={styles.glow} />
-            <div className={styles.number}>{stat.number}</div>
-            <div className={styles.label}>{stat.label}</div>
-            <a 
-              href={`/${stat.number.toLowerCase().replace(/\s+/g, '')}.html`}
-              style={{
-                display: 'inline-block',
-                marginTop: '16px',
-                fontSize: '0.85rem',
-                color: 'var(--secondary)',
-                textDecoration: 'none',
-                fontWeight: 600,
-                borderBottom: '1px dashed rgba(255, 160, 0, 0.4)',
-                paddingBottom: '2px',
-                transition: 'opacity 0.2s'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
-              onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
-            >
-              Testar Agora →
-            </a>
-          </div>
-        ))}
-      </div>
-
-      <div className={`container ${styles.aboutContainer}`}>
+      <div className={`container ${styles.aboutContainer}`} style={{ marginBottom: '80px' }}>
         <div className={styles.aboutCardsGrid}>
           {/* Card 1: Diretor Criativo */}
           <div className={`glass-card ${styles.aboutCard}`}>
@@ -94,6 +61,39 @@ export default function Stats() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className={`container ${styles.sectionHeader}`}>
+        <span className={styles.sectionSubtitle}>Projetos Reais</span>
+        <h2 className={styles.sectionTitle}>Sistemas Ativos em Produção</h2>
+      </div>
+
+      <div className={`container ${styles.grid}`} style={{ marginBottom: '60px' }}>
+        {statsData.map((stat, i) => (
+          <div key={i} className={`glass-card ${styles.card}`}>
+            <div className={styles.glow} />
+            <div className={styles.number}>{stat.number}</div>
+            <div className={styles.label}>{stat.label}</div>
+            <a 
+              href={`/${stat.number.toLowerCase().replace(/\s+/g, '')}.html`}
+              style={{
+                display: 'inline-block',
+                marginTop: '16px',
+                fontSize: '0.85rem',
+                color: 'var(--secondary)',
+                textDecoration: 'none',
+                fontWeight: 600,
+                borderBottom: '1px dashed rgba(255, 160, 0, 0.4)',
+                paddingBottom: '2px',
+                transition: 'opacity 0.2s'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+              onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+            >
+              Testar Agora →
+            </a>
+          </div>
+        ))}
       </div>
     </section>
   );
