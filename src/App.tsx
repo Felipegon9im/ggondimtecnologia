@@ -11,11 +11,13 @@ import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import CanvasBackground from './components/CanvasBackground';
 import BibleDivider from './components/BibleDivider';
+import WhatsAppButton from './components/WhatsAppButton';
 
 export default function App() {
   return (
     <>
       <CanvasBackground />
+      <WhatsAppButton />
       <Header />
       <main style={{ flexGrow: 1 }}>
         <Hero />
