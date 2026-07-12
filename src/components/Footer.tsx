@@ -61,7 +61,7 @@ export default function Footer() {
                 </div>
                 <div className={styles.infoText}>
                   <span className={styles.infoLabel}>Telefone / WhatsApp</span>
-                  <span className={styles.infoValue}>+55 (11) 99999-9999</span>
+                  <span className={styles.infoValue}>+55 (48) 98862-8030</span>
                 </div>
               </div>
 
