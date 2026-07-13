@@ -264,3 +264,18 @@
     stroke-dashoffset: -500;
   }
 }
+
+.diagramImage {
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: contain;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease;
+}
+
+.diagramImage:hover {
+  transform: scale(1.02);
+}
