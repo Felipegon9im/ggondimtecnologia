@@ -136,38 +136,41 @@
 
 .cardFlex {
   display: flex;
-  gap: 30px;
+  flex-direction: column;
+  gap: 24px;
   height: 100%;
 }
 
-@media (max-width: 576px) {
-  .cardFlex {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-}
-
 .imageCol {
-  width: 150px;
-  height: 200px;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.08);
+  height: 280px;
+  width: 100%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
   flex-shrink: 0;
   background: rgba(255, 255, 255, 0.02);
 }
 
 .imageColContain {
   display: flex;
-  align-items: flex-end;
   justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.15);
 }
 
 .containImage {
   width: 100%;
   height: auto;
+  max-height: 260px;
+  object-fit: contain;
   display: block;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.aboutCard:hover .containImage {
+  transform: scale(1.02);
 }
 
 .hqImage {
@@ -175,12 +178,17 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.3s ease;
+}
+
+.aboutCard:hover .hqImage {
+  transform: scale(1.04);
 }
 
 .textCol {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  gap: 12px;
 }
 
 .aboutSubtitle {
