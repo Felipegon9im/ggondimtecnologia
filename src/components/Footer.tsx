@@ -39,9 +39,9 @@ export default function Footer() {
         {/* Upper Contact Area */}
         <div className={styles.contactGrid}>
           <div className={styles.contactInfo}>
-            <h2 className={styles.contactTitle}>Vamos criar algo incrível juntos?</h2>
+            <h2 className={styles.contactTitle}>Vamos transformar sua ideia em uma solução digital?</h2>
             <p className={styles.contactDesc}>
-              Entre em contato para discutir a sua ideia de projeto, automações ou integração de sistemas de Inteligência Artificial. Responderei em menos de 24 horas.
+              Desenvolvemos sites, sistemas, aplicativos, dashboards e automações personalizados para impulsionar o crescimento do seu negócio. Entre em contato e solicite um orçamento sem compromisso.
             </p>
 
             <div className={styles.infoList}>
@@ -160,7 +160,7 @@ export default function Footer() {
                   className="btn btn-primary" 
                   style={{ width: '100%', gap: '10px', marginTop: '8px' }}
                 >
-                  {loading ? 'Enviando...' : 'Enviar Solicitação'}
+                  {loading ? 'Enviando...' : 'Solicitar Orçamento'}
                   <Send size={16} />
                 </button>
               </form>
@@ -183,30 +183,31 @@ export default function Footer() {
           <div className={styles.linksCol}>
             <span className={styles.colTitle}>Serviços</span>
             <ul className={styles.linksList}>
-              <li className={styles.linkItem}><a href="#solucoes">Software Sob Medida</a></li>
-              <li className={styles.linkItem}><a href="#solucoes">Inteligência Artificial</a></li>
-              <li className={styles.linkItem}><a href="#solucoes">DevOps & Cloud</a></li>
-              <li className={styles.linkItem}><a href="#solucoes">Integrações ERP</a></li>
+              <li className={styles.linkItem}><a href="#sites">Criação de Sites</a></li>
+              <li className={styles.linkItem}><a href="#sistemas">Sistemas sob Medida</a></li>
+              <li className={styles.linkItem}><a href="#bi">Business Intelligence</a></li>
+              <li className={styles.linkItem}><a href="#automacoes">Automações & APIs</a></li>
             </ul>
           </div>
 
           <div className={styles.linksCol}>
             <span className={styles.colTitle}>Navegação</span>
             <ul className={styles.linksList}>
-              <li className={styles.linkItem}><a href="#solucoes">Soluções</a></li>
-              <li className={styles.linkItem}><a href="#widget">Simulador de Stack</a></li>
-              <li className={styles.linkItem}><a href="#tecnologias">Tecnologias</a></li>
+              <li className={styles.linkItem}><a href="#sobre">Sobre Mim</a></li>
+              <li className={styles.linkItem}><a href="#sites">Sites</a></li>
+              <li className={styles.linkItem}><a href="#sistemas">Sistemas</a></li>
+              <li className={styles.linkItem}><a href="#bi">BI & Dashboards</a></li>
+              <li className={styles.linkItem}><a href="#automacoes">Automações</a></li>
               <li className={styles.linkItem}><a href="#portfolio">Portfólio</a></li>
-              <li className={styles.linkItem}><a href="#faq">FAQ</a></li>
             </ul>
           </div>
 
           <div className={styles.linksCol}>
             <span className={styles.colTitle}>Empresa</span>
             <ul className={styles.linksList}>
-              <li className={styles.linkItem}><a href="#stats">Sobre Mim</a></li>
-              <li className={styles.linkItem}><a href="#widget">Simular Projeto</a></li>
-              <li className={styles.linkItem}><a href="#contato">Fale Comigo</a></li>
+              <li className={styles.linkItem}><a href="#sobre">Quem Somos</a></li>
+              <li className={styles.linkItem}><a href="#tecnologias">Tecnologias</a></li>
+              <li className={styles.linkItem}><a href="#processo">Como Trabalhamos</a></li>
             </ul>
           </div>
         </div>

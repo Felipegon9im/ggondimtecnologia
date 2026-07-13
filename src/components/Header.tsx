@@ -35,12 +35,14 @@ export default function Header() {
           </div>
 
           <nav className={styles.nav}>
-            <a href="#solucoes" className={styles.navLink}>Serviços</a>
-            <a href="#widget" className={styles.navLink}>Simulador de IA</a>
+            <a href="#sobre" className={styles.navLink}>Sobre</a>
+            <a href="#sites" className={styles.navLink}>Sites</a>
+            <a href="#sistemas" className={styles.navLink}>Sistemas</a>
+            <a href="#bi" className={styles.navLink}>BI</a>
+            <a href="#automacoes" className={styles.navLink}>Automações</a>
             <a href="#tecnologias" className={styles.navLink}>Tecnologias</a>
-            <a href="#stats" className={styles.navLink}>Sobre</a>
+            <a href="#processo" className={styles.navLink}>Processo</a>
             <a href="#portfolio" className={styles.navLink}>Portfólio</a>
-            <a href="#faq" className={styles.navLink}>FAQ</a>
           </nav>
 
           <div className={styles.actions}>
@@ -69,12 +71,14 @@ export default function Header() {
           <span className={styles.logoText}>G&G <span className={styles.logoSpan}>Tecnologia</span></span>
         </div>
         <nav className={styles.mobileNav}>
-          <a href="#solucoes" className={styles.mobileNavLink} onClick={toggleMobileMenu}>Serviços</a>
-          <a href="#widget" className={styles.mobileNavLink} onClick={toggleMobileMenu}>Simulador de IA</a>
+          <a href="#sobre" className={styles.mobileNavLink} onClick={toggleMobileMenu}>Sobre</a>
+          <a href="#sites" className={styles.mobileNavLink} onClick={toggleMobileMenu}>Sites</a>
+          <a href="#sistemas" className={styles.mobileNavLink} onClick={toggleMobileMenu}>Sistemas</a>
+          <a href="#bi" className={styles.mobileNavLink} onClick={toggleMobileMenu}>BI</a>
+          <a href="#automacoes" className={styles.mobileNavLink} onClick={toggleMobileMenu}>Automações</a>
           <a href="#tecnologias" className={styles.mobileNavLink} onClick={toggleMobileMenu}>Tecnologias</a>
-          <a href="#stats" className={styles.mobileNavLink} onClick={toggleMobileMenu}>Sobre</a>
+          <a href="#processo" className={styles.mobileNavLink} onClick={toggleMobileMenu}>Processo</a>
           <a href="#portfolio" className={styles.mobileNavLink} onClick={toggleMobileMenu}>Portfólio</a>
-          <a href="#faq" className={styles.mobileNavLink} onClick={toggleMobileMenu}>FAQ</a>
         </nav>
         <a href="#contato" className="btn btn-primary" style={{ width: '100%', marginTop: '20px' }} onClick={toggleMobileMenu}>
           <MessageSquare size={18} />
