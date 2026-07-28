@@ -390,6 +390,9 @@
         width: 24px;
         height: 24px;
       }
+      .right-col {
+        padding-bottom: 50px;
+      }
     }
 
     /* Carousel Styles */
@@ -495,6 +498,12 @@
         Frente de Caixa Rápida
       </h1>
 
+      <div style="margin-top: 8px;">
+        <span style="background: rgba(255, 77, 0, 0.15); color: #FF4D00; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 1.1rem; border: 1px solid rgba(255, 77, 0, 0.3); display: inline-block;">
+          Teste 15 dias grátis. Sem cartão. Depois R$ 75/mês.
+        </span>
+      </div>
+
       <p class="description">
         O <strong>MercadoPDV</strong> é uma solução de Ponto de Venda completa, ultra veloz e pensada especificamente para o fluxo de caixa de mercados, mercearias e hortifrutis. Controle estoque, acompanhe vendas e opere de forma segura, sem atrasos.
       </p>
@@ -516,11 +525,11 @@
       <div class="features-grid">
         <div class="feature-item">
           <span class="feature-icon">✓</span>
-          <p class="feature-text"><strong>Operação Offline:</strong> Continue vendendo e registrando entradas mesmo sem conexão à Internet. Os dados são sincronizados localmente e na nuvem de forma assíncrona.</p>
+          <p class="feature-text"><strong>Operação Offline:</strong> Os dados ficam salvos com segurança no seu próprio computador, com backup em um clique.</p>
         </div>
         <div class="feature-item">
           <span class="feature-icon">✓</span>
-          <p class="feature-text"><strong>Controle de Estoque e Validades:</strong> Alertas automáticos de estoque mínimo e rastreamento de lotes de produtos com datas de vencimento próximas.</p>
+          <p class="feature-text"><strong>Controle de Estoque Inteligente:</strong> Alertas automáticos de estoque mínimo, filtros de itens em falta e lista de compras inteligente para reposição.</p>
         </div>
         <div class="feature-item">
           <span class="feature-icon">✓</span>
@@ -528,13 +537,7 @@
         </div>
       </div>
 
-      <div class="tech-tags">
-        <span class="tech-tag">React.js</span>
-        <span class="tech-tag">TypeScript</span>
-        <span class="tech-tag">SQLite</span>
-        <span class="tech-tag">Electron</span>
-        <span class="tech-tag">Windows API</span>
-      </div>
+
     </div>
 
     <div class="right-col">
@@ -544,14 +547,15 @@
           Instale a versão estável mais recente do MercadoPDV e otimize as vendas da sua empresa imediatamente.
         </p>
 
-        <a href="/" class="btn btn-primary btn-test" onclick="alert('Solicitação de teste recebida! Entrarei em contato para agendar uma demonstração local do MercadoPDV no Windows.'); return false;">
-          Testar Agora
+        <a href="/MercadoPDV_Setup_1.1.0.exe" download="MercadoPDV_Setup_1.1.0.exe" class="btn btn-primary btn-download" style="text-align: center; text-decoration: none; display: inline-block; box-sizing: border-box; font-weight: 600; font-size: 1.1rem; padding: 18px;">
+          Baixar e testar 15 dias grátis
         </a>
-
-        <a href="/MercadoPDV_Setup_1.1.0.exe" download="MercadoPDV_Setup_1.1.0.exe" class="btn btn-secondary btn-download" style="text-align: center; text-decoration: none; display: inline-block; box-sizing: border-box;">
-          Baixar para Windows (EXE)
-        </a>
-        <span class="download-note">Requer Windows 10 ou superior</span>
+        <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; margin-top: 12px; border: 1px solid rgba(255,255,255,0.1);">
+          <span style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4; display: block; text-align: left;">
+            <strong style="color: white;">Aviso SmartScreen:</strong> Ao instalar, o Windows pode exibir um aviso por ser um programa novo. Clique em <em>'Mais informações'</em> &rarr; <em>'Executar assim mesmo'</em>.
+          </span>
+        </div>
+        <span class="download-note" style="margin-top: 16px; display: block;">Requer Windows 10 ou superior</span>
       </div>
     </div>
   </main>
