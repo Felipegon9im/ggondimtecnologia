@@ -13,6 +13,7 @@ export default defineConfig({
         sophiapainel: resolve(__dirname, 'sophiapainel.html'),
         zapflow: resolve(__dirname, 'zapflow.html'),
         agendaflow: resolve(__dirname, 'agendaflow.html'),
+        relatorios: resolve(__dirname, 'relatorios.html'),
       }
     }
   }
