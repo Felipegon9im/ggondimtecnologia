@@ -14,6 +14,7 @@ export default defineConfig({
         zapflow: resolve(__dirname, 'zapflow.html'),
         agendaflow: resolve(__dirname, 'agendaflow.html'),
         relatorios: resolve(__dirname, 'relatorios.html'),
+        ferramentas: resolve(__dirname, 'ferramentas.html'),
       }
     }
   }
