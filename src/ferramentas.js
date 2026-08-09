@@ -1,8 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const authForm = document.getElementById("auth-form");
-  const passInput = document.getElementById("pass-input");
-  const authError = document.getElementById("auth-error");
-  const authScreen = document.getElementById("auth-screen");
   const appScreen = document.getElementById("app-screen");
 
   const urlInput = document.getElementById("url-input");
@@ -12,19 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // O URL da API que será hospedada na nuvem
   const API_URL = "https://api-ferramentas-c507.onrender.com/download";
-
-  // Autenticação Simples
-  authForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    // Senha simples e fixa para uso pessoal
-    if (passInput.value === "gg2026") {
-      authScreen.style.display = "none";
-      appScreen.style.display = "block";
-    } else {
-      authError.style.display = "block";
-      passInput.value = "";
-    }
-  });
 
   // Função genérica de Download
   async function startDownload(format) {
