@@ -10,9 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnAudio = document.getElementById("btn-audio");
   const statusContainer = document.getElementById("status-container");
 
-  // O URL da API que será hospedada na nuvem (ex: Render)
-  // Vamos configurar provisoriamente para localhost para testes
-  const API_URL = "http://localhost:3000/download";
+  // O URL da API que será hospedada na nuvem
+  const API_URL = "https://api-ferramentas-c507.onrender.com/download";
 
   // Autenticação Simples
   authForm.addEventListener("submit", (e) => {
