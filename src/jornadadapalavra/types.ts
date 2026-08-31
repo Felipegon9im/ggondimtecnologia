@@ -106,6 +106,7 @@ export interface UserProfile {
   unlockedLevelIds: LevelId[];
   badges: Badge[];
   quests: Quest[];
+  claimedChestUnitIds?: number[];
   hasOnboarded: boolean;
 }
 

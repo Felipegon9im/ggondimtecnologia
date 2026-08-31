@@ -93,6 +93,7 @@ export const App: React.FC = () => {
         {viewMode === 'MAP' && (
           <DuolingoPathView
             profile={profile}
+            onSaveProfile={handleSaveProfile}
             onStartLesson={(lesson) => setActiveDuolingoLesson(lesson)}
             onOpenShop={() => setIsShopOpen(true)}
           />

@@ -58,6 +58,7 @@ export class StorageService {
       if (parsed.stats.maxHearts === undefined) parsed.stats.maxHearts = 5;
       if (!parsed.quests) parsed.quests = INITIAL_QUESTS;
       if (!parsed.completedLessonIds) parsed.completedLessonIds = [];
+      if (!parsed.claimedChestUnitIds) parsed.claimedChestUnitIds = [];
 
       // Check daily streak reset
       const todayStr = new Date().toISOString().split('T')[0];
