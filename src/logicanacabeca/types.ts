@@ -4,6 +4,7 @@ export type QuestionDifficulty = 1 | 2 | 3 | 4 | 5;
 
 export interface Question {
   id: string;
+  lessonId?: string;
   subject: string;      // e.g. 'estruturas-logicas', 'conectivos', 'tabelas-verdade'
   topic: string;        // e.g. 'negacao', 'condicional', 'diagramas'
   subtopic?: string;

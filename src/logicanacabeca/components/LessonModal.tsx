@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import type { Module, Lesson, Question, UserProgress } from '../types';
 import { QUESTIONS } from '../data/questionsData';
 import { audioService } from '../services/audioService';
@@ -22,25 +22,45 @@ export const LessonModal: React.FC<LessonModalProps> = ({
 }) => {
   const [step, setStep] = useState<'THEORY' | 'PRACTICE' | 'COMPLETED'>('THEORY');
   
-  const matchingQuestions = QUESTIONS.filter(
-    q => q.subject === module.slug || q.topic === lesson.id || q.subject === 'logica-sentencial'
-  );
-  const currentQuestion: Question = matchingQuestions[0] || {
-    id: `temp-${lesson.id}`,
-    subject: module.slug,
-    topic: lesson.id,
-    difficulty: 2,
-    question: `Dada a lição "${lesson.title}", assinale a afirmação correta sobre sua regra fundamental:`,
-    options: [
-      lesson.simpleRule,
-      'A regra inverte sem lógica alguma.',
-      'Todas as opções são sempre verdadeiras simultaneamente.',
-      'Nenhuma das anteriores.'
-    ],
-    answer: 0,
-    explanation: `A regra principal ensinada nesta lição é: ${lesson.simpleRule}`,
-    tip: lesson.macete
-  };
+  // Pick specific question for this lesson from bank or cycle based on total questions answered
+  const currentQuestion: Question = useMemo(() => {
+    // 1. Strict filter by lessonId or topic
+    const lessonQuestions = QUESTIONS.filter(
+      q => q.lessonId === lesson.id || q.topic === lesson.id
+    );
+
+    if (lessonQuestions.length > 0) {
+      // Pick question based on questionsAnswered count so it cycles to different questions
+      const index = progress.stats.questionsAnswered % lessonQuestions.length;
+      return lessonQuestions[index];
+    }
+
+    // 2. Fallback filter by module subject
+    const moduleQuestions = QUESTIONS.filter(q => q.subject === module.slug);
+    if (moduleQuestions.length > 0) {
+      const index = progress.stats.questionsAnswered % moduleQuestions.length;
+      return moduleQuestions[index];
+    }
+
+    // 3. Dynamic Fallback Question specific to lesson rule
+    return {
+      id: `fallback-${lesson.id}`,
+      lessonId: lesson.id,
+      subject: module.slug,
+      topic: lesson.id,
+      difficulty: 2,
+      question: `Considerando o conceito de "${lesson.title}", assinale a alternativa que expressa corretamente sua REGRA FUNDAMENTAL:`,
+      options: [
+        lesson.simpleRule,
+        'A regra nega os conectivos sem nenhuma lógica formal.',
+        'O valor lógico é sempre indeterminado em todas as premissas.',
+        'Nenhuma das alternativas anteriores está correta.'
+      ],
+      answer: 0,
+      explanation: `A regra ensinada nesta lição é: "${lesson.simpleRule}"`,
+      tip: lesson.macete
+    };
+  }, [lesson.id, module.slug, progress.stats.questionsAnswered]);
 
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState<boolean>(false);
@@ -84,7 +104,7 @@ export const LessonModal: React.FC<LessonModalProps> = ({
 
     updated.moduleMastery[module.id] = SRSEngine.calculateModuleMastery(
       module.id,
-      matchingQuestions.length || 5,
+      5,
       moduleQuestions
     );
 
@@ -225,11 +245,26 @@ export const LessonModal: React.FC<LessonModalProps> = ({
         {/* STEP 2: PRACTICE QUESTION */}
         {step === 'PRACTICE' && (
           <div>
-            <h3 style={{ fontFamily: 'Outfit, sans-serif', fontSize: '1.25rem', fontWeight: 700, color: '#ffffff', marginBottom: 12 }}>
-              Exercício de Fixação 🎯
-            </h3>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+              <h3 style={{ fontFamily: 'Outfit, sans-serif', fontSize: '1.25rem', fontWeight: 700, color: '#ffffff' }}>
+                Exercício de Fixação 🎯
+              </h3>
+              {currentQuestion.banca && (
+                <span style={{
+                  fontSize: '0.75rem',
+                  fontWeight: 800,
+                  color: '#fbbf24',
+                  background: 'rgba(245, 158, 11, 0.15)',
+                  border: '1px solid rgba(245, 158, 11, 0.3)',
+                  padding: '2px 8px',
+                  borderRadius: 6
+                }}>
+                  {currentQuestion.banca} {currentQuestion.concursoYear || ''}
+                </span>
+              )}
+            </div>
 
-            <p style={{ color: '#f3f4f6', fontSize: '1rem', lineHeight: 1.5, marginBottom: 20, background: 'rgba(0,0,0,0.3)', padding: 16, borderRadius: 12 }}>
+            <p style={{ color: '#f3f4f6', fontSize: '1rem', lineHeight: 1.5, marginBottom: 20, background: 'rgba(0,0,0,0.3)', padding: 16, borderRadius: 12, whiteSpace: 'pre-line' }}>
               {currentQuestion.question}
             </p>
 
@@ -309,11 +344,16 @@ export const LessonModal: React.FC<LessonModalProps> = ({
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: isCorrect ? '#34d399' : '#f87171', fontWeight: 800, fontSize: '1.05rem', marginBottom: 6 }}>
                   {isCorrect ? <Check size={20} /> : <AlertTriangle size={20} />}
-                  {isCorrect ? '🔥 Acertou em cheio! +15 XP' : 'Quase lá! Vamos revisar o conceito:'}
+                  {isCorrect ? '🔥 Acertou em cheio! +15 XP' : 'Quase lá! Vamos revisar a explicação:'}
                 </div>
                 <p style={{ color: '#d1d5db', fontSize: '0.9rem', lineHeight: 1.4 }}>
                   {currentQuestion.explanation}
                 </p>
+                {currentQuestion.tip && (
+                  <div style={{ marginTop: 8, color: '#fbbf24', fontSize: '0.85rem', fontWeight: 700 }}>
+                    💡 Dica: {currentQuestion.tip}
+                  </div>
+                )}
               </div>
             )}
 
