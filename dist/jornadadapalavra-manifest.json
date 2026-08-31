@@ -1,0 +1,17 @@
+{
+  "short_name": "JornadaPalavra",
+  "name": "Jornada da Palavra - Crescimento Bíblico Gamificado",
+  "icons": [
+    {
+      "src": "/jornadadapalavra-icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512 192x192 144x144 96x96 72x72"
+    }
+  ],
+  "start_url": "/jornadadapalavra.html",
+  "background_color": "#0d0914",
+  "theme_color": "#d97706",
+  "display": "standalone",
+  "orientation": "portrait",
+  "description": "Uma jornada diária de crescimento na Palavra com devocionais, Bíblia sagrada, mapa de níveis e conquistas."
+}

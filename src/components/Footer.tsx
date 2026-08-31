@@ -205,9 +205,9 @@ export default function Footer() {
           <div className={styles.linksCol}>
             <span className={styles.colTitle}>Aplicativos</span>
             <ul className={styles.linksList}>
+              <li className={styles.linkItem}><a href="/jornadadapalavra.html" style={{ color: '#fbbf24', fontWeight: 'bold' }}>📖 Jornada da Palavra (PWA)</a></li>
               <li className={styles.linkItem}><a href="/logicanacabeca.html" style={{ color: '#a78bfa', fontWeight: 'bold' }}>🧠 Lógica na Cabeça (PWA)</a></li>
               <li className={styles.linkItem}><a href="#sobre">Quem Somos</a></li>
-              <li className={styles.linkItem}><a href="#tecnologias">Tecnologias</a></li>
             </ul>
           </div>
         </div>

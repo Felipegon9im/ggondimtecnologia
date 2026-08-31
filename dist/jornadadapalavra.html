@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Jornada da Palavra - Crescimento Bíblico Gamificado | PWA</title>
+
+  <!-- PWA Metadata -->
+  <link rel="manifest" href="/jornadadapalavra-manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="/jornadadapalavra-icon.svg" />
+  <meta name="theme-color" content="#d97706" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="JornadaPalavra" />
+  <link rel="apple-touch-icon" href="/jornadadapalavra-icon.svg" />
+
+  <!-- Fonts & Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cinzel:wght@600;700;800;900&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0d0914;
+      color: #f3f4f6;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #root-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100vw;
+      background: radial-gradient(circle at top center, #2e1047 0%, #0d0914 80%);
+    }
+    .spinner {
+      width: 52px;
+      height: 52px;
+      border: 4px solid rgba(245, 158, 11, 0.2);
+      border-top-color: #f59e0b;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+  <script type="module" crossorigin src="/assets/jornadadapalavra-O7VjV_Pj.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/jsx-runtime-CiCIT9Ue.js">
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-Dezn_h7o.js">
+  <link rel="modulepreload" crossorigin href="/assets/volume-x-DPQI0onz.js">
+  <link rel="modulepreload" crossorigin href="/assets/shopping-bag-B8yp6YCf.js">
+  <link rel="stylesheet" crossorigin href="/assets/jornadadapalavra-adb3Lq2Q.css">
+</head>
+<body>
+  <div id="root">
+    <div id="root-loading">
+      <div class="spinner"></div>
+      <h2 style="margin-top: 20px; font-family: 'Cinzel', serif; color: #fbbf24; font-size: 1.35rem; letter-spacing: 1px;">JORNADA DA PALAVRA 📖</h2>
+      <p style="color: #9ca3af; font-size: 0.9rem;">Carregando sua missão diária...</p>
+    </div>
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/jornadadapalavra-sw.js')
+          .then(reg => console.log('SW Jornada registrado!', reg.scope))
+          .catch(err => console.error('Erro SW Jornada:', err));
+      });
+    }
+  </script>
+</body>
+</html>

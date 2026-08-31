@@ -16,6 +16,7 @@ export default defineConfig({
         relatorios: resolve(__dirname, 'relatorios.html'),
         ferramentas: resolve(__dirname, 'ferramentas.html'),
         logicanacabeca: resolve(__dirname, 'logicanacabeca.html'),
+        jornadadapalavra: resolve(__dirname, 'jornadadapalavra.html'),
       }
     }
   }
