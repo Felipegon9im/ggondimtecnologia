@@ -1,23 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import type { UserProfile, AppViewMode, AppLanguage, Devotional, LevelInfo } from './types';
+import type { UserProfile, AppViewMode, AppLanguage, Devotional, LevelInfo, DuolingoLesson } from './types';
 import { StorageService } from './services/storageService';
 import { Navbar } from './components/Navbar';
 import { OnboardingModal } from './components/OnboardingModal';
 import { FeedView } from './components/FeedView';
-import { MapView } from './components/MapView';
+import { DuolingoPathView } from './components/DuolingoPathView';
 import { BibleReader } from './components/BibleReader';
 import { QuizModal } from './components/QuizModal';
+import { DuolingoQuizModal } from './components/DuolingoQuizModal';
 import { ImpactPanel } from './components/ImpactPanel';
 import { EarlyAccessModal } from './components/EarlyAccessModal';
 import { BadgesModal } from './components/BadgesModal';
+import { ShopModal } from './components/ShopModal';
+import { QuestsModal } from './components/QuestsModal';
+import { LeaderboardModal } from './components/LeaderboardModal';
 import './App.css';
 
 export const App: React.FC = () => {
   const [profile, setProfile] = useState<UserProfile>(StorageService.loadProfile());
   const [viewMode, setViewMode] = useState<AppViewMode>('FEED');
   const [activeQuizDevotional, setActiveQuizDevotional] = useState<Devotional | null>(null);
+  const [activeDuolingoLesson, setActiveDuolingoLesson] = useState<DuolingoLesson | null>(null);
   const [earlyAccessLevel, setEarlyAccessLevel] = useState<LevelInfo | null>(null);
   const [isBadgesOpen, setIsBadgesOpen] = useState<boolean>(false);
+  const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
+  const [isQuestsOpen, setIsQuestsOpen] = useState<boolean>(false);
+  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState<boolean>(false);
   const [pwaDeferredPrompt, setPwaDeferredPrompt] = useState<any>(null);
 
   useEffect(() => {
@@ -63,6 +71,9 @@ export const App: React.FC = () => {
         setMode={setViewMode}
         onChangeLanguage={handleChangeLanguage}
         onOpenBadges={() => setIsBadgesOpen(true)}
+        onOpenShop={() => setIsShopOpen(true)}
+        onOpenQuests={() => setIsQuestsOpen(true)}
+        onOpenLeaderboard={() => setIsLeaderboardOpen(true)}
         pwaDeferredPrompt={pwaDeferredPrompt}
         onInstallPwa={handleInstallPWA}
       />
@@ -80,9 +91,10 @@ export const App: React.FC = () => {
         )}
 
         {viewMode === 'MAP' && (
-          <MapView
+          <DuolingoPathView
             profile={profile}
-            onOpenEarlyAccess={(lvl) => setEarlyAccessLevel(lvl)}
+            onStartLesson={(lesson) => setActiveDuolingoLesson(lesson)}
+            onOpenShop={() => setIsShopOpen(true)}
           />
         )}
 
@@ -100,7 +112,18 @@ export const App: React.FC = () => {
         )}
       </main>
 
-      {/* Quiz Modal */}
+      {/* Duolingo Quiz Modal for Path Lessons */}
+      {activeDuolingoLesson && (
+        <DuolingoQuizModal
+          lesson={activeDuolingoLesson}
+          profile={profile}
+          onSaveProfile={handleSaveProfile}
+          onClose={() => setActiveDuolingoLesson(null)}
+          onOpenShop={() => setIsShopOpen(true)}
+        />
+      )}
+
+      {/* Devotional Quiz Modal */}
       {activeQuizDevotional && (
         <QuizModal
           devotional={activeQuizDevotional}
@@ -125,6 +148,32 @@ export const App: React.FC = () => {
         <BadgesModal
           badges={profile.badges}
           onClose={() => setIsBadgesOpen(false)}
+        />
+      )}
+
+      {/* Shop Modal */}
+      {isShopOpen && (
+        <ShopModal
+          profile={profile}
+          onSaveProfile={handleSaveProfile}
+          onClose={() => setIsShopOpen(false)}
+        />
+      )}
+
+      {/* Quests Modal */}
+      {isQuestsOpen && (
+        <QuestsModal
+          profile={profile}
+          onSaveProfile={handleSaveProfile}
+          onClose={() => setIsQuestsOpen(false)}
+        />
+      )}
+
+      {/* Leaderboard Modal */}
+      {isLeaderboardOpen && (
+        <LeaderboardModal
+          profile={profile}
+          onClose={() => setIsLeaderboardOpen(false)}
         />
       )}
 

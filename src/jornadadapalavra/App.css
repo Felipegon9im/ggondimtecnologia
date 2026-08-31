@@ -10,6 +10,7 @@
   --purple-royal: #7c3aed;
   --purple-dark: #3b0764;
   --emerald-main: #10b981;
+  --red-heart: #ef4444;
 
   --text-main: #f3f4f6;
   --text-muted: #a78bfa;
@@ -52,10 +53,10 @@ body {
   max-width: 900px;
   width: 100%;
   margin: 0 auto;
-  padding: 24px 16px 100px 16px;
+  padding: 24px 16px 120px 16px;
 }
 
-/* 3D Gold / Royal Button */
+/* 3D Button Style */
 .btn-3d {
   position: relative;
   display: inline-flex;
@@ -98,11 +99,115 @@ body {
   --btn-shadow: #047857;
 }
 
-.btn-3d.outline {
-  --btn-bg: rgba(255, 255, 255, 0.05);
-  --btn-shadow: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  color: var(--gold-bright);
+.btn-3d.rose {
+  --btn-bg: linear-gradient(135deg, #ef4444, #dc2626);
+  --btn-shadow: #991b1b;
+}
+
+/* Duolingo 3D Circular Node Buttons */
+.node-3d {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  position: relative;
+  transition: all 0.15s ease;
+  box-shadow: 0 6px 0 var(--node-shadow, #047857), 0 10px 20px rgba(0,0,0,0.4);
+  background: var(--node-bg, linear-gradient(135deg, #10b981, #059669));
+}
+
+.node-3d:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 var(--node-shadow, #047857), 0 4px 10px rgba(0,0,0,0.4);
+}
+
+.node-3d.active {
+  --node-bg: linear-gradient(135deg, #fbbf24, #f59e0b);
+  --node-shadow: #b45309;
+  animation: pulseGold 1.8s infinite;
+}
+
+.node-3d.completed {
+  --node-bg: linear-gradient(135deg, #10b981, #059669);
+  --node-shadow: #047857;
+}
+
+.node-3d.locked {
+  --node-bg: rgba(255, 255, 255, 0.08);
+  --node-shadow: rgba(255, 255, 255, 0.15);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@keyframes pulseGold {
+  0%, 100% { box-shadow: 0 6px 0 #b45309, 0 0 20px rgba(245, 158, 11, 0.6); }
+  50% { box-shadow: 0 6px 0 #b45309, 0 0 35px rgba(251, 191, 36, 0.9); }
+}
+
+/* Mascot Speech Bubble */
+.mascot-bubble {
+  position: relative;
+  background: rgba(124, 58, 237, 0.25);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  padding: 16px 20px;
+  border-radius: 18px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.mascot-bubble::before {
+  content: '';
+  position: absolute;
+  left: 24px;
+  bottom: -10px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid rgba(139, 92, 246, 0.4);
+}
+
+/* Duolingo Quiz Fixed Footer Bar */
+.duolingo-quiz-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  z-index: 1200;
+  backdrop-filter: blur(16px);
+  border-top: 2px solid transparent;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 850px;
+  margin: 0 auto;
+  border-radius: 20px 20px 0 0;
+}
+
+.duolingo-footer-correct {
+  background: rgba(16, 185, 129, 0.92);
+  border-top-color: #34d399;
+  color: #ffffff;
+}
+
+.duolingo-footer-wrong {
+  background: rgba(239, 68, 68, 0.92);
+  border-top-color: #f87171;
+  color: #ffffff;
+}
+
+.duolingo-footer-default {
+  background: rgba(13, 9, 20, 0.92);
+  border-top-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Glassmorphism Card */
@@ -161,6 +266,6 @@ body {
 
 @media (max-width: 768px) {
   .main-content {
-    padding: 16px 12px 110px 12px;
+    padding: 16px 12px 120px 12px;
   }
 }

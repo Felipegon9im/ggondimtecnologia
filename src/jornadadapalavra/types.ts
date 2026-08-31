@@ -58,9 +58,32 @@ export interface Badge {
   unlockedAt?: number;
 }
 
+export interface Quest {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  target: number;
+  current: number;
+  rewardXP: number;
+  completed: boolean;
+}
+
+export interface LeaderboardUser {
+  rank: number;
+  name: string;
+  xp: number;
+  avatar: string;
+  league: string; // 'Bronze' | 'Prata' | 'Ouro' | 'Diamante'
+  isUser?: boolean;
+}
+
 export interface UserStats {
   xp: number;
+  hearts: number; // 0 to 5 (Duolingo lives)
+  maxHearts: number;
   streakDays: number;
+  streakFreeze: boolean;
   lastActiveDate: string; // 'YYYY-MM-DD'
   readToday: boolean;
   devotionalsCompleted: number;
@@ -79,9 +102,32 @@ export interface UserProfile {
   style: AvatarStyle;
   stats: UserStats;
   completedDevotionalIds: string[];
+  completedLessonIds: string[];
   unlockedLevelIds: LevelId[];
   badges: Badge[];
+  quests: Quest[];
   hasOnboarded: boolean;
+}
+
+export interface DuolingoLesson {
+  id: string;
+  unitId: number;
+  title: string;
+  icon: string;
+  mascotTip: string;
+  question: string;
+  options: string[];
+  answer: number;
+  explanation: string;
+}
+
+export interface DuolingoUnit {
+  id: number;
+  title: string;
+  description: string;
+  levelId: LevelId;
+  color: string;
+  lessons: DuolingoLesson[];
 }
 
 export type AppViewMode = 
@@ -90,4 +136,7 @@ export type AppViewMode =
   | 'BIBLE'
   | 'QUIZ'
   | 'IMPACT'
-  | 'EARLY_ACCESS';
+  | 'EARLY_ACCESS'
+  | 'SHOP'
+  | 'QUESTS'
+  | 'LEADERBOARD';

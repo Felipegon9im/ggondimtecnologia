@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { UserProfile, AppViewMode, AppLanguage } from '../types';
 import { LEVELS } from '../data/levelsData';
 import { audioService } from '../services/audioService';
-import { Flame, Zap, Award, Volume2, VolumeX, Download, BookOpen, MapPin, Compass, Layers } from 'lucide-react';
+import { Flame, Zap, Heart, ShoppingBag, Target, Trophy, Award, Volume2, VolumeX, Download, BookOpen, MapPin, Compass, Layers } from 'lucide-react';
 
 interface NavbarProps {
   profile: UserProfile;
@@ -10,6 +10,9 @@ interface NavbarProps {
   setMode: (mode: AppViewMode) => void;
   onChangeLanguage: (lang: AppLanguage) => void;
   onOpenBadges: () => void;
+  onOpenShop: () => void;
+  onOpenQuests: () => void;
+  onOpenLeaderboard: () => void;
   pwaDeferredPrompt: any;
   onInstallPwa: () => void;
 }
@@ -20,6 +23,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   setMode,
   onChangeLanguage,
   onOpenBadges,
+  onOpenShop,
+  onOpenQuests,
+  onOpenLeaderboard,
   pwaDeferredPrompt,
   onInstallPwa
 }) => {
@@ -82,9 +88,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span style={{ fontSize: '0.7rem', color: '#a78bfa', fontWeight: 700 }}>
                 {currentLevel.icon} {currentLevel.name}
               </span>
-              <span style={{ fontSize: '0.65rem', background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: 6, color: '#d1d5db' }}>
-                {profile.style === 'BIBLICO' ? 'Época Bíblica' : 'Atual'}
-              </span>
             </div>
           </div>
         </div>
@@ -102,7 +105,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => { audioService.playClick(); setMode('MAP'); }}
             className={`btn-nav ${currentMode === 'MAP' ? 'active' : ''}`}
           >
-            <MapPin size={16} /> <span className="nav-text">Mapa</span>
+            <MapPin size={16} /> <span className="nav-text">Trilha</span>
           </button>
 
           <button 
@@ -120,8 +123,30 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
         </nav>
 
-        {/* Counters & Controls */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        {/* Duolingo Counters & Control Modals */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {/* Hearts Counter */}
+          <div 
+            onClick={() => { audioService.playClick(); onOpenShop(); }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+              background: 'rgba(239, 68, 68, 0.15)',
+              border: '1px solid rgba(239, 68, 68, 0.3)',
+              padding: '6px 10px',
+              borderRadius: 20,
+              fontSize: '0.85rem',
+              fontWeight: 800,
+              color: '#ef4444',
+              cursor: 'pointer'
+            }} 
+            title="Vidas / Corações (Clique para recarregar)"
+          >
+            <Heart size={16} fill="#ef4444" />
+            <span>{profile.stats.hearts}</span>
+          </div>
+
           {/* Streak */}
           <div style={{
             display: 'flex',
@@ -129,13 +154,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             gap: 4,
             background: 'rgba(245, 158, 11, 0.15)',
             border: '1px solid rgba(245, 158, 11, 0.3)',
-            padding: '6px 12px',
+            padding: '6px 10px',
             borderRadius: 20,
             fontSize: '0.85rem',
             fontWeight: 800,
             color: '#fbbf24'
           }} title="Sequência Diária">
-            <Flame size={17} fill="#fbbf24" />
+            <Flame size={16} fill="#fbbf24" />
             <span>{profile.stats.streakDays}d</span>
           </div>
 
@@ -146,37 +171,17 @@ export const Navbar: React.FC<NavbarProps> = ({
             gap: 4,
             background: 'rgba(139, 92, 246, 0.15)',
             border: '1px solid rgba(139, 92, 246, 0.3)',
-            padding: '6px 12px',
+            padding: '6px 10px',
             borderRadius: 20,
             fontSize: '0.85rem',
             fontWeight: 800,
             color: '#a78bfa'
           }} title="Pontos de Experiência">
-            <Zap size={17} fill="#a78bfa" />
+            <Zap size={16} fill="#a78bfa" />
             <span>{profile.stats.xp} XP</span>
           </div>
 
-          {/* Language Selector */}
-          <select 
-            value={profile.language}
-            onChange={(e) => onChangeLanguage(e.target.value as AppLanguage)}
-            style={{
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              color: '#ffffff',
-              padding: '6px 8px',
-              borderRadius: 10,
-              fontWeight: 700,
-              fontSize: '0.8rem',
-              cursor: 'pointer'
-            }}
-          >
-            <option value="PT">🇧🇷 PT</option>
-            <option value="ES">🇪🇸 ES</option>
-            <option value="EN">🇺🇸 EN</option>
-          </select>
-
-          {/* Badges Modal */}
+          {/* Badges Button */}
           <button 
             onClick={() => { audioService.playClick(); onOpenBadges(); }}
             style={{
@@ -191,8 +196,82 @@ export const Navbar: React.FC<NavbarProps> = ({
             }}
             title="Conquistas"
           >
-            <Award size={18} color="#fbbf24" />
+            <Award size={17} color="#fbbf24" />
           </button>
+
+          {/* Quests Button */}
+          <button 
+            onClick={() => { audioService.playClick(); onOpenQuests(); }}
+            style={{
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              padding: 8,
+              borderRadius: 10,
+              color: '#ffffff',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+            title="Missões Diárias"
+          >
+            <Target size={17} color="#fbbf24" />
+          </button>
+
+          {/* Leaderboard Button */}
+          <button 
+            onClick={() => { audioService.playClick(); onOpenLeaderboard(); }}
+            style={{
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              padding: 8,
+              borderRadius: 10,
+              color: '#ffffff',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+            title="Classificação dos Peregrinos"
+          >
+            <Trophy size={17} color="#fbbf24" />
+          </button>
+
+          {/* Shop Button */}
+          <button 
+            onClick={() => { audioService.playClick(); onOpenShop(); }}
+            style={{
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              padding: 8,
+              borderRadius: 10,
+              color: '#ffffff',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+            title="Loja do Reino"
+          >
+            <ShoppingBag size={17} color="#fbbf24" />
+          </button>
+
+          {/* Language Selector */}
+          <select 
+            value={profile.language}
+            onChange={(e) => onChangeLanguage(e.target.value as AppLanguage)}
+            style={{
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              color: '#ffffff',
+              padding: '6px 6px',
+              borderRadius: 10,
+              fontWeight: 700,
+              fontSize: '0.8rem',
+              cursor: 'pointer'
+            }}
+          >
+            <option value="PT">🇧🇷</option>
+            <option value="ES">🇪🇸</option>
+            <option value="EN">🇺🇸</option>
+          </select>
 
           {/* Audio Toggle */}
           <button 
@@ -207,9 +286,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               display: 'flex',
               alignItems: 'center'
             }}
-            title={isMuted ? 'Ativar Efeitos Sonoros' : 'Desativar Sons'}
+            title={isMuted ? 'Ativar Sons' : 'Desativar Sons'}
           >
-            {isMuted ? <VolumeX size={18} color="#ef4444" /> : <Volume2 size={18} color="#10b981" />}
+            {isMuted ? <VolumeX size={17} color="#ef4444" /> : <Volume2 size={17} color="#10b981" />}
           </button>
 
           {/* PWA Install Button */}
