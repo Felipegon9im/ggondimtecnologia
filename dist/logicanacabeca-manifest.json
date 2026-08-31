@@ -1,0 +1,17 @@
+{
+  "short_name": "LógicaCabeça",
+  "name": "Lógica na Cabeça - Raciocínio Lógico para Concursos",
+  "icons": [
+    {
+      "src": "/logicanacabeca-icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512 192x192 144x144 96x96 72x72"
+    }
+  ],
+  "start_url": "/logicanacabeca.html",
+  "background_color": "#090d16",
+  "theme_color": "#8b5cf6",
+  "display": "standalone",
+  "orientation": "portrait",
+  "description": "Aprenda e domine Raciocínio Lógico para concursos públicos com repetição espaçada, microlições e jogos interativos."
+}

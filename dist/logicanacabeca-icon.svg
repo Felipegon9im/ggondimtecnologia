@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed" />
+      <stop offset="50%" stop-color="#4f46e5" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+    <linearGradient id="brainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f43f5e" />
+      <stop offset="50%" stop-color="#fb7185" />
+      <stop offset="100%" stop-color="#e11d48" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="url(#bgGrad)" />
+  <circle cx="256" cy="256" r="210" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="8" />
+  
+  <!-- Brain / Logic SVG emblem -->
+  <g transform="translate(100, 100) scale(0.61)">
+    <!-- Brain Silhouette -->
+    <path d="M 256,50 C 180,50 120,100 110,170 C 80,180 60,210 60,250 C 60,290 80,320 110,330 C 120,400 180,450 256,450 C 332,450 392,400 402,330 C 432,320 452,290 452,250 C 452,210 432,180 402,170 C 392,100 332,50 256,50 Z" fill="rgba(0,0,0,0.25)" />
+    
+    <!-- Logic Symbols inside emblem -->
+    <text x="256" y="240" font-family="'Inter', sans-serif" font-weight="900" font-size="110" fill="#ffffff" text-anchor="middle" filter="url(#glow)">P ∧ Q</text>
+    <text x="256" y="340" font-family="'Inter', sans-serif" font-weight="800" font-size="70" fill="#facc15" text-anchor="middle">P → Q</text>
+
+    <!-- Connective Symbols Circle Ring -->
+    <circle cx="256" cy="256" r="180" fill="none" stroke="#f43f5e" stroke-width="12" stroke-dasharray="20 15" />
+  </g>
+</svg>
