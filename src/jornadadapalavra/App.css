@@ -23,12 +23,19 @@
   --font-main: 'Plus Jakarta Sans', sans-serif;
   --font-title: 'Cinzel', serif;
   --font-heading: 'Outfit', sans-serif;
+
+  --node-size: 72px;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -38,6 +45,7 @@ body {
   min-height: 100vh;
   user-select: none;
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* App Container */
@@ -46,6 +54,7 @@ body {
   display: flex;
   flex-direction: column;
   background: radial-gradient(circle at 50% 0%, #2e1047 0%, #0d0914 75%);
+  overflow-x: hidden;
 }
 
 .main-content {
@@ -53,7 +62,7 @@ body {
   max-width: 900px;
   width: 100%;
   margin: 0 auto;
-  padding: 24px 16px 120px 16px;
+  padding: 24px 16px calc(120px + env(safe-area-inset-bottom)) 16px;
 }
 
 /* 3D Button Style */
@@ -106,19 +115,20 @@ body {
 
 /* Duolingo 3D Circular Node Buttons */
 .node-3d {
-  width: 72px;
-  height: 72px;
+  width: var(--node-size);
+  height: var(--node-size);
   border-radius: 50%;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 1.8rem;
   position: relative;
   transition: all 0.15s ease;
   box-shadow: 0 6px 0 var(--node-shadow, #047857), 0 10px 20px rgba(0,0,0,0.4);
   background: var(--node-bg, linear-gradient(135deg, #10b981, #059669));
+  touch-action: manipulation;
 }
 
 .node-3d:active {
@@ -147,67 +157,6 @@ body {
 @keyframes pulseGold {
   0%, 100% { box-shadow: 0 6px 0 #b45309, 0 0 20px rgba(245, 158, 11, 0.6); }
   50% { box-shadow: 0 6px 0 #b45309, 0 0 35px rgba(251, 191, 36, 0.9); }
-}
-
-/* Mascot Speech Bubble */
-.mascot-bubble {
-  position: relative;
-  background: rgba(124, 58, 237, 0.25);
-  border: 1px solid rgba(139, 92, 246, 0.4);
-  padding: 16px 20px;
-  border-radius: 18px;
-  color: #ffffff;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  margin-bottom: 20px;
-}
-
-.mascot-bubble::before {
-  content: '';
-  position: absolute;
-  left: 24px;
-  bottom: -10px;
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 10px solid rgba(139, 92, 246, 0.4);
-}
-
-/* Duolingo Quiz Fixed Footer Bar */
-.duolingo-quiz-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 20px;
-  z-index: 1200;
-  backdrop-filter: blur(16px);
-  border-top: 2px solid transparent;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 850px;
-  margin: 0 auto;
-  border-radius: 20px 20px 0 0;
-}
-
-.duolingo-footer-correct {
-  background: rgba(16, 185, 129, 0.92);
-  border-top-color: #34d399;
-  color: #ffffff;
-}
-
-.duolingo-footer-wrong {
-  background: rgba(239, 68, 68, 0.92);
-  border-top-color: #f87171;
-  color: #ffffff;
-}
-
-.duolingo-footer-default {
-  background: rgba(13, 9, 20, 0.92);
-  border-top-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Glassmorphism Card */
@@ -257,6 +206,8 @@ body {
   justify-content: center;
   padding: 16px;
   animation: fadeIn 0.2s ease;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 @keyframes fadeIn {
@@ -264,8 +215,42 @@ body {
   to { opacity: 1; transform: scale(1); }
 }
 
-@media (max-width: 768px) {
+/* Responsive Media Queries */
+@media (max-width: 640px) {
+  :root {
+    --node-size: 62px;
+  }
+
   .main-content {
-    padding: 16px 12px 120px 12px;
+    padding: 14px 10px calc(110px + env(safe-area-inset-bottom)) 10px;
+  }
+
+  .glass-card {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .btn-3d {
+    padding: 12px 18px;
+    font-size: 0.92rem;
+  }
+
+  .modal-overlay {
+    padding: 10px;
+    align-items: flex-end; /* Slide up on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --node-size: 58px;
+  }
+
+  h2 {
+    font-size: 1.35rem !important;
+  }
+
+  h3 {
+    font-size: 1.2rem !important;
   }
 }

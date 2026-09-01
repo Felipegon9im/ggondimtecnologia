@@ -43,10 +43,10 @@ export const Navbar: React.FC<NavbarProps> = ({
       position: 'sticky',
       top: 0,
       zIndex: 500,
-      background: 'rgba(13, 9, 20, 0.92)',
-      backdropFilter: 'blur(16px)',
+      background: 'rgba(13, 9, 20, 0.94)',
+      backdropFilter: 'blur(18px)',
       borderBottom: '1px solid rgba(245, 158, 11, 0.25)',
-      padding: '12px 20px'
+      padding: '10px 14px'
     }}>
       <div style={{
         maxWidth: 1100,
@@ -55,63 +55,72 @@ export const Navbar: React.FC<NavbarProps> = ({
         alignItems: 'center',
         justifyContent: 'space-between',
         flexWrap: 'wrap',
-        gap: 12
+        gap: 8
       }}>
         {/* App Title & Brand */}
         <div 
           onClick={() => { audioService.playClick(); setMode('JOURNEY_PATH'); }}
-          style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}
+          style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}
         >
           <div style={{
-            width: 44,
-            height: 44,
-            borderRadius: 14,
+            width: 38,
+            height: 38,
+            borderRadius: 12,
             background: 'linear-gradient(135deg, #fbbf24, #d97706)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 4px 14px rgba(245, 158, 11, 0.4)'
+            boxShadow: '0 4px 12px rgba(245, 158, 11, 0.4)',
+            flexShrink: 0
           }}>
-            <span style={{ fontSize: '1.4rem' }}>📖</span>
+            <span style={{ fontSize: '1.2rem' }}>📖</span>
           </div>
           <div>
             <h1 style={{
               fontFamily: 'Cinzel, serif',
-              fontSize: '1.3rem',
+              fontSize: '1.15rem',
               fontWeight: 800,
               color: '#fbbf24',
-              letterSpacing: 1,
+              letterSpacing: 0.8,
               lineHeight: 1.1
             }}>
               Jornada Bíblica
             </h1>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 2 }}>
-              <span style={{ fontSize: '0.75rem', color: '#a78bfa', fontWeight: 700 }}>
-                {leagueTier.icon} {leagueTier.name} • {progressInfo.percentage}%
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 1 }}>
+              <span style={{ fontSize: '0.7rem', color: '#a78bfa', fontWeight: 700 }}>
+                {leagueTier.icon} {leagueTier.name.replace(/.*Liga d[aeos] /i, '')} • {progressInfo.percentage}%
               </span>
             </div>
           </div>
         </div>
 
         {/* Navigation Tabs */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: 6, overflowX: 'auto', padding: '4px 0' }}>
+        <nav style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <button 
             onClick={() => { audioService.playClick(); setMode('JOURNEY_PATH'); }}
             className={`btn-nav ${currentMode === 'JOURNEY_PATH' ? 'active' : ''}`}
           >
-            <Compass size={16} /> <span className="nav-text">Trilha Bíblica</span>
+            <Compass size={16} /> <span>Trilha</span>
           </button>
 
           <button 
             onClick={() => { audioService.playClick(); setMode('BIBLE_READER'); }}
             className={`btn-nav ${currentMode === 'BIBLE_READER' ? 'active' : ''}`}
           >
-            <BookOpen size={16} /> <span className="nav-text">Leitor Bíblico</span>
+            <BookOpen size={16} /> <span>Leitor</span>
           </button>
         </nav>
 
-        {/* Gamification Stats Counters */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        {/* Gamification Stats Counters Bar (Horizontally scrollable on small mobile screens) */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 6,
+          overflowX: 'auto',
+          maxWidth: '100%',
+          paddingBottom: 2,
+          WebkitOverflowScrolling: 'touch'
+        }}>
           {/* Hearts */}
           <div 
             onClick={() => { audioService.playClick(); onOpenShop(); }}
@@ -121,33 +130,35 @@ export const Navbar: React.FC<NavbarProps> = ({
               gap: 4,
               background: 'rgba(239, 68, 68, 0.15)',
               border: '1px solid rgba(239, 68, 68, 0.3)',
-              padding: '6px 10px',
-              borderRadius: 20,
-              fontSize: '0.85rem',
+              padding: '5px 9px',
+              borderRadius: 16,
+              fontSize: '0.8rem',
               fontWeight: 800,
               color: '#ef4444',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              whiteSpace: 'nowrap'
             }} 
             title="Vidas / Corações (Clique para recarregar)"
           >
-            <Heart size={16} fill="#ef4444" />
+            <Heart size={14} fill="#ef4444" />
             <span>{profile.stats.hearts}</span>
           </div>
 
-          {/* Streak (Caminhada do Peregrino) */}
+          {/* Streak */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
             gap: 4,
             background: 'rgba(245, 158, 11, 0.15)',
             border: '1px solid rgba(245, 158, 11, 0.3)',
-            padding: '6px 10px',
-            borderRadius: 20,
-            fontSize: '0.85rem',
+            padding: '5px 9px',
+            borderRadius: 16,
+            fontSize: '0.8rem',
             fontWeight: 800,
-            color: '#fbbf24'
+            color: '#fbbf24',
+            whiteSpace: 'nowrap'
           }} title="Caminhada do Peregrino (Sequência Diária)">
-            <Flame size={16} fill="#fbbf24" />
+            <Flame size={14} fill="#fbbf24" />
             <span>{profile.stats.streakDays}d</span>
           </div>
 
@@ -158,13 +169,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             gap: 4,
             background: 'rgba(139, 92, 246, 0.15)',
             border: '1px solid rgba(139, 92, 246, 0.3)',
-            padding: '6px 10px',
-            borderRadius: 20,
-            fontSize: '0.85rem',
+            padding: '5px 9px',
+            borderRadius: 16,
+            fontSize: '0.8rem',
             fontWeight: 800,
-            color: '#a78bfa'
+            color: '#a78bfa',
+            whiteSpace: 'nowrap'
           }} title="Pontos de Experiência">
-            <Zap size={16} fill="#a78bfa" />
+            <Zap size={14} fill="#a78bfa" />
             <span>{profile.stats.xp} XP</span>
           </div>
 
@@ -174,8 +186,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             style={{
               background: 'rgba(255,255,255,0.05)',
               border: '1px solid rgba(255,255,255,0.1)',
-              padding: 8,
-              borderRadius: 10,
+              padding: 6,
+              borderRadius: 8,
               color: '#ffffff',
               cursor: 'pointer',
               display: 'flex',
@@ -183,7 +195,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             }}
             title="Conquistas"
           >
-            <Award size={17} color="#fbbf24" />
+            <Award size={15} color="#fbbf24" />
           </button>
 
           {/* Quests */}
@@ -192,8 +204,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             style={{
               background: 'rgba(255,255,255,0.05)',
               border: '1px solid rgba(255,255,255,0.1)',
-              padding: 8,
-              borderRadius: 10,
+              padding: 6,
+              borderRadius: 8,
               color: '#ffffff',
               cursor: 'pointer',
               display: 'flex',
@@ -201,7 +213,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             }}
             title="Missões Diárias"
           >
-            <Target size={17} color="#fbbf24" />
+            <Target size={15} color="#fbbf24" />
           </button>
 
           {/* Leaderboard */}
@@ -210,8 +222,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             style={{
               background: 'rgba(255,255,255,0.05)',
               border: '1px solid rgba(255,255,255,0.1)',
-              padding: 8,
-              borderRadius: 10,
+              padding: 6,
+              borderRadius: 8,
               color: '#ffffff',
               cursor: 'pointer',
               display: 'flex',
@@ -219,7 +231,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             }}
             title="Liga dos Peregrinos"
           >
-            <Trophy size={17} color="#fbbf24" />
+            <Trophy size={15} color="#fbbf24" />
           </button>
 
           {/* Shop */}
@@ -228,8 +240,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             style={{
               background: 'rgba(255,255,255,0.05)',
               border: '1px solid rgba(255,255,255,0.1)',
-              padding: 8,
-              borderRadius: 10,
+              padding: 6,
+              borderRadius: 8,
               color: '#ffffff',
               cursor: 'pointer',
               display: 'flex',
@@ -237,7 +249,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             }}
             title="Loja do Reino"
           >
-            <ShoppingBag size={17} color="#fbbf24" />
+            <ShoppingBag size={15} color="#fbbf24" />
           </button>
 
           {/* Language Selector */}
@@ -248,10 +260,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               background: 'rgba(255,255,255,0.05)',
               border: '1px solid rgba(255,255,255,0.1)',
               color: '#ffffff',
-              padding: '6px 6px',
-              borderRadius: 10,
+              padding: '5px 4px',
+              borderRadius: 8,
               fontWeight: 700,
-              fontSize: '0.8rem',
+              fontSize: '0.75rem',
               cursor: 'pointer'
             }}
           >
@@ -266,8 +278,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             style={{
               background: 'rgba(255,255,255,0.05)',
               border: '1px solid rgba(255,255,255,0.1)',
-              padding: 8,
-              borderRadius: 10,
+              padding: 6,
+              borderRadius: 8,
               color: '#ffffff',
               cursor: 'pointer',
               display: 'flex',
@@ -275,7 +287,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             }}
             title={isMuted ? 'Ativar Sons' : 'Desativar Sons'}
           >
-            {isMuted ? <VolumeX size={17} color="#ef4444" /> : <Volume2 size={17} color="#10b981" />}
+            {isMuted ? <VolumeX size={15} color="#ef4444" /> : <Volume2 size={15} color="#10b981" />}
           </button>
 
           {/* PWA Install Button */}
@@ -283,9 +295,9 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               onClick={onInstallPwa}
               className="btn-3d gold"
-              style={{ padding: '6px 10px', fontSize: '0.75rem' }}
+              style={{ padding: '5px 8px', fontSize: '0.72rem' }}
             >
-              <Download size={14} /> Instalar
+              <Download size={13} /> Instalar
             </button>
           )}
         </div>
@@ -295,14 +307,14 @@ export const Navbar: React.FC<NavbarProps> = ({
         .btn-nav {
           display: flex;
           align-items: center;
-          gap: 6px;
-          padding: 8px 12px;
+          gap: 4px;
+          padding: 6px 10px;
           background: rgba(255,255,255,0.03);
           border: 1px solid rgba(255,255,255,0.06);
-          border-radius: 12px;
+          border-radius: 10px;
           color: #9ca3af;
           font-weight: 600;
-          font-size: 0.85rem;
+          font-size: 0.8rem;
           cursor: pointer;
           transition: all 0.2s ease;
           white-space: nowrap;
@@ -315,9 +327,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           background: rgba(245, 158, 11, 0.2);
           border-color: rgba(245, 158, 11, 0.5);
           color: #fbbf24;
-        }
-        @media (max-width: 640px) {
-          .nav-text { display: none; }
         }
       `}</style>
     </header>
