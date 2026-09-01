@@ -3,7 +3,7 @@ import type { BibleVerse } from '../types';
 import { BibleJourneyService } from '../services/bibleJourneyService';
 import { bibleService } from '../services/bibleService';
 import { audioService } from '../services/audioService';
-import { X, BookOpen, UserCheck, HelpCircle, HeartHandshake, CheckCircle2, AlertTriangle, ArrowRight } from 'lucide-react';
+import { X, BookOpen, UserCheck, HelpCircle, HeartHandshake, CheckCircle2, AlertTriangle, ArrowRight, Zap, BookMarked } from 'lucide-react';
 
 interface ChapterStudyModalProps {
   bookId: string;
@@ -31,9 +31,28 @@ export const ChapterStudyModal: React.FC<ChapterStudyModalProps> = ({
   }, []);
 
   const contextData = BibleJourneyService.generateChapterContext(bookId, chapterNum);
+  const questionsBank = contextData.questionsBank || [];
 
-  // Quiz state
-  const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  // Quiz progression state (samples 3 questions out of 10)
+  const [currentQIndex, setCurrentQIndex] = useState<number>(0);
+  const activeQuestion = questionsBank[currentQIndex] || {
+    id: 'Q1',
+    tipo: 'compreensao',
+    dificuldade: 'facil',
+    pergunta: contextData.quizQuestion,
+    alternativas: {
+      A: contextData.quizOptions[0] || '',
+      B: contextData.quizOptions[1] || '',
+      C: contextData.quizOptions[2] || '',
+      D: contextData.quizOptions[3] || ''
+    },
+    resposta_correta: (['A', 'B', 'C', 'D'][contextData.quizAnswer] || 'A') as 'A' | 'B' | 'C' | 'D',
+    explicacao: contextData.quizExplanation,
+    referencia: `${contextData.bookName} ${chapterNum}`,
+    xp: 10
+  };
+
+  const [selectedOption, setSelectedOption] = useState<'A' | 'B' | 'C' | 'D' | null>(null);
   const [isQuizAnswered, setIsQuizAnswered] = useState<boolean>(false);
   const [isQuizCorrect, setIsQuizCorrect] = useState<boolean>(false);
 
@@ -56,25 +75,53 @@ export const ChapterStudyModal: React.FC<ChapterStudyModalProps> = ({
     return () => { isMounted = false; };
   }, [selectedVersion, bookId, chapterNum]);
 
-  const handleSelectOption = (idx: number) => {
+  const handleSelectOptionKey = (key: 'A' | 'B' | 'C' | 'D') => {
     if (isQuizAnswered) return;
     audioService.playClick();
-    setSelectedOption(idx);
+    setSelectedOption(key);
   };
 
   const handleCheckQuiz = () => {
     if (selectedOption === null || isQuizAnswered) return;
-    const correct = selectedOption === contextData.quizAnswer;
+    const correct = selectedOption === activeQuestion.resposta_correta;
     setIsQuizAnswered(true);
     setIsQuizCorrect(correct);
 
-    if (correct) audioService.playCorrect();
-    else audioService.playWrong();
+    if (correct) {
+      audioService.playCorrect();
+    } else {
+      audioService.playWrong();
+    }
+  };
+
+  const handleNextQuizQuestion = () => {
+    if (currentQIndex < Math.min(2, questionsBank.length - 1)) {
+      audioService.playClick();
+      setCurrentQIndex(prev => prev + 1);
+      setSelectedOption(null);
+      setIsQuizAnswered(false);
+      setIsQuizCorrect(false);
+    } else {
+      audioService.playClick();
+      setActiveTab('REFLECTION');
+    }
   };
 
   const handleFinishStudy = () => {
     onCompleteChapter(bookId, chapterNum, isQuizCorrect);
   };
+
+  const getTypeLabel = (tipo: string) => {
+    switch (tipo) {
+      case 'compreensao': return { text: 'COMPREENSÃO 🧠', bg: 'rgba(59, 130, 246, 0.2)', border: '#3b82f6', color: '#60a5fa' };
+      case 'detalhe': return { text: 'DETALHE 🔍', bg: 'rgba(245, 158, 11, 0.2)', border: '#f59e0b', color: '#fbbf24' };
+      case 'conexao': return { text: 'CONEXÃO 🔗', bg: 'rgba(139, 92, 246, 0.2)', border: '#8b5cf6', color: '#c084fc' };
+      case 'bonus': return { text: 'BÔNUS 🌟', bg: 'rgba(236, 72, 153, 0.2)', border: '#ec4899', color: '#f472b6' };
+      default: return { text: 'PERGUNTA 🎯', bg: 'rgba(16, 185, 129, 0.2)', border: '#10b981', color: '#34d399' };
+    }
+  };
+
+  const typeInfo = getTypeLabel(activeQuestion.tipo);
 
   return (
     <div className="modal-overlay">
@@ -316,48 +363,108 @@ export const ChapterStudyModal: React.FC<ChapterStudyModalProps> = ({
         {/* TAB 3: QUIZ */}
         {activeTab === 'QUIZ' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-            <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: isMobile ? '1.1rem' : '1.2rem', fontWeight: 800, color: '#ffffff' }}>
-              Desafio de Compreensão 🎯
-            </h3>
+            {/* Question Progress & Badges */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{
+                  background: typeInfo.bg,
+                  border: `1px solid ${typeInfo.border}`,
+                  color: typeInfo.color,
+                  padding: '3px 10px',
+                  borderRadius: 10,
+                  fontSize: '0.72rem',
+                  fontWeight: 800,
+                  textTransform: 'uppercase'
+                }}>
+                  {typeInfo.text}
+                </span>
 
+                <span style={{
+                  background: 'rgba(255,255,255,0.06)',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  color: '#d1d5db',
+                  padding: '3px 10px',
+                  borderRadius: 10,
+                  fontSize: '0.72rem',
+                  fontWeight: 700
+                }}>
+                  {activeQuestion.dificuldade === 'facil' ? '🟢 Fácil' : activeQuestion.dificuldade === 'media' ? '🟡 Média' : '🔴 Difícil'}
+                </span>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{
+                  background: 'rgba(245, 158, 11, 0.15)',
+                  border: '1px solid rgba(245, 158, 11, 0.3)',
+                  color: '#fbbf24',
+                  padding: '3px 10px',
+                  borderRadius: 10,
+                  fontSize: '0.75rem',
+                  fontWeight: 800,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 4
+                }}>
+                  <Zap size={13} fill="#fbbf24" /> +{activeQuestion.xp} XP
+                </span>
+
+                <span style={{ color: '#9ca3af', fontSize: '0.78rem', fontWeight: 700 }}>
+                  Pergunta {currentQIndex + 1} de {Math.min(3, questionsBank.length)}
+                </span>
+              </div>
+            </div>
+
+            {/* Biblical Reference Badge */}
+            {activeQuestion.referencia && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#a78bfa', fontSize: '0.78rem', fontWeight: 700 }}>
+                <BookMarked size={14} />
+                <span>Referência Bíblica: {activeQuestion.referencia}</span>
+              </div>
+            )}
+
+            {/* Question Text */}
             <p style={{
               color: '#ffffff',
-              fontSize: isMobile ? '0.9rem' : '1rem',
+              fontSize: isMobile ? '0.92rem' : '1.02rem',
+              fontWeight: 700,
               lineHeight: 1.5,
-              background: 'rgba(0,0,0,0.3)',
-              padding: 14,
+              background: 'rgba(0,0,0,0.35)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              padding: 16,
               borderRadius: 12
             }}>
-              {contextData.quizQuestion}
+              {activeQuestion.pergunta}
             </p>
 
+            {/* 4 Alternatives (A, B, C, D) */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              {contextData.quizOptions.map((opt, idx) => {
+              {(['A', 'B', 'C', 'D'] as const).map((key) => {
+                const optText = activeQuestion.alternativas[key];
                 let border = '1px solid rgba(255,255,255,0.1)';
                 let bg = 'rgba(255,255,255,0.03)';
                 let textColor = '#f3f4f6';
 
-                if (selectedOption === idx) {
+                if (selectedOption === key) {
                   border = '2px solid #fbbf24';
                   bg = 'rgba(245, 158, 11, 0.2)';
                 }
 
                 if (isQuizAnswered) {
-                  if (idx === contextData.quizAnswer) {
+                  if (key === activeQuestion.resposta_correta) {
                     border = '2px solid #10b981';
-                    bg = 'rgba(16, 185, 129, 0.2)';
+                    bg = 'rgba(16, 185, 129, 0.25)';
                     textColor = '#34d399';
-                  } else if (selectedOption === idx) {
+                  } else if (selectedOption === key) {
                     border = '2px solid #ef4444';
-                    bg = 'rgba(239, 68, 68, 0.2)';
+                    bg = 'rgba(239, 68, 68, 0.25)';
                     textColor = '#f87171';
                   }
                 }
 
                 return (
                   <button
-                    key={idx}
-                    onClick={() => handleSelectOption(idx)}
+                    key={key}
+                    onClick={() => handleSelectOptionKey(key)}
                     disabled={isQuizAnswered}
                     style={{
                       padding: isMobile ? '12px 14px' : '14px 18px',
@@ -371,29 +478,31 @@ export const ChapterStudyModal: React.FC<ChapterStudyModalProps> = ({
                       cursor: isQuizAnswered ? 'default' : 'pointer',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 10
+                      gap: 10,
+                      transition: 'all 0.2s ease'
                     }}
                   >
                     <span style={{
-                      width: 26,
-                      height: 26,
+                      width: 28,
+                      height: 28,
                       borderRadius: 8,
                       background: 'rgba(255,255,255,0.1)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '0.8rem',
+                      fontSize: '0.85rem',
                       fontWeight: 800,
                       flexShrink: 0
                     }}>
-                      {String.fromCharCode(65 + idx)}
+                      {key}
                     </span>
-                    <span style={{ flex: 1 }}>{opt}</span>
+                    <span style={{ flex: 1 }}>{optText}</span>
                   </button>
                 );
               })}
             </div>
 
+            {/* Educational Feedback Explanation */}
             {isQuizAnswered && (
               <div style={{
                 padding: 14,
@@ -403,14 +512,15 @@ export const ChapterStudyModal: React.FC<ChapterStudyModalProps> = ({
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: isQuizCorrect ? '#34d399' : '#f87171', fontWeight: 800, fontSize: '0.95rem', marginBottom: 4 }}>
                   {isQuizCorrect ? <CheckCircle2 size={18} /> : <AlertTriangle size={18} />}
-                  {isQuizCorrect ? 'Incrível! Resposta Correta (+10 XP Bônus)' : 'Ops! Veja a explicação:'}
+                  {isQuizCorrect ? `Resposta Correta! (+${activeQuestion.xp} XP)` : `Resposta Correta: ${activeQuestion.resposta_correta}`}
                 </div>
-                <p style={{ color: '#d1d5db', fontSize: '0.85rem' }}>
-                  {contextData.quizExplanation}
+                <p style={{ color: '#d1d5db', fontSize: '0.85rem', lineHeight: 1.45 }}>
+                  {activeQuestion.explicacao}
                 </p>
               </div>
             )}
 
+            {/* Action Buttons */}
             {!isQuizAnswered ? (
               <button
                 onClick={handleCheckQuiz}
@@ -422,11 +532,11 @@ export const ChapterStudyModal: React.FC<ChapterStudyModalProps> = ({
               </button>
             ) : (
               <button
-                onClick={() => { audioService.playClick(); setActiveTab('REFLECTION'); }}
+                onClick={handleNextQuizQuestion}
                 className="btn-3d purple"
                 style={{ width: '100%' }}
               >
-                Ver Reflexão Final <ArrowRight size={16} />
+                {currentQIndex < Math.min(2, questionsBank.length - 1) ? 'Próxima Pergunta ➡️' : 'Ver Reflexão Final 🌟'}
               </button>
             )}
           </div>

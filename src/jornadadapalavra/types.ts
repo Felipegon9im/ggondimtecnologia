@@ -38,6 +38,23 @@ export interface BibleVerse {
   text: string;
 }
 
+export interface ChapterQuestion {
+  id: string;
+  tipo: 'compreensao' | 'detalhe' | 'conexao' | 'bonus';
+  dificuldade: 'facil' | 'media' | 'dificil';
+  pergunta: string;
+  alternativas: {
+    A: string;
+    B: string;
+    C: string;
+    D: string;
+  };
+  resposta_correta: 'A' | 'B' | 'C' | 'D';
+  explicacao: string;
+  referencia: string;
+  xp: number;
+}
+
 export interface ChapterContext {
   bookId: string;
   bookName: string;
@@ -53,6 +70,7 @@ export interface ChapterContext {
   quizAnswer: number;
   quizExplanation: string;
   reflection: string;
+  questionsBank?: ChapterQuestion[];
 }
 
 export interface RankingShiftInfo {
