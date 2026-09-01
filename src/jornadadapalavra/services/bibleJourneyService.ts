@@ -34,10 +34,18 @@ export const BIBLE_TERRITORIES: BibleTerritory[] = (ALL_BOOKS_DATA as RawBookMet
 
   if (book.id === 'gn') {
     themeImage = '/genesis_creation.png';
-  } else if (['ex', 'lv', 'nm', 'dt', 'js', 'jz', 'rt', '1sm', '2sm', '1rs', '2rs'].includes(book.id)) {
+  } else if (['ex', 'lv', 'nm', 'dt'].includes(book.id)) {
     themeImage = '/exodus_redsea.jpg';
-  } else if (['sl', 'pv', 'ec', 'ct', 'is', 'jr', 'lm', 'ez', 'dn'].includes(book.id)) {
+  } else if (['js', 'jz', 'rt', '1sm', '2sm', '1rs', '2rs', '1ch', '2ch'].includes(book.id)) {
+    themeImage = '/david_goliath.jpg';
+  } else if (['sl', 'pv', 'ec', 'ct', 'jb', 'job'].includes(book.id)) {
     themeImage = '/psalms_worship.jpg';
+  } else if (['is', 'jr', 'lm', 'ez', 'dn', 'hos', 'joe', 'amo', 'oba', 'jon', 'mic', 'nah', 'hab', 'zep', 'hag', 'zec', 'mal'].includes(book.id)) {
+    themeImage = '/noah_ark.jpg';
+  } else if (['mt', 'mc', 'lc', 'jo', 'at'].includes(book.id)) {
+    themeImage = '/gospels_jesus.jpg';
+  } else if (['ap', 'rev'].includes(book.id)) {
+    themeImage = '/new_jerusalem.jpg';
   }
 
   if (book.testament === 'OLD') {
