@@ -340,8 +340,12 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
                 const chapterKey = BibleJourneyService.getChapterKey(territory.id, chNum);
                 const isCompleted = completedKeys.includes(chapterKey);
 
-                const prevKey = chNum > 1 ? BibleJourneyService.getChapterKey(territory.id, chNum - 1) : null;
-                const isAvailable = chNum === 1 || (prevKey && completedKeys.includes(prevKey)) || isCompleted;
+                const tIdx = BIBLE_TERRITORIES.findIndex(t => t.id === territory.id);
+                const prevKey = chNum > 1
+                  ? BibleJourneyService.getChapterKey(territory.id, chNum - 1)
+                  : (tIdx > 0 ? BibleJourneyService.getChapterKey(BIBLE_TERRITORIES[tIdx - 1].id, BIBLE_TERRITORIES[tIdx - 1].chaptersCount) : null);
+
+                const isAvailable = (tIdx === 0 && chNum === 1) || (prevKey !== null && completedKeys.includes(prevKey)) || isCompleted;
                 const isCurrentActive = isAvailable && !isCompleted;
 
                 const currentOffset = offsets[chIdx % offsets.length];

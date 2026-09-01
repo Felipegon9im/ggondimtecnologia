@@ -87,6 +87,19 @@ export const App: React.FC = () => {
       updated.stats.completedChapterKeys.push(chapterKey);
     }
 
+    // Advance active chapter to the next sequential chapter
+    if (chapterNum < territory.chaptersCount) {
+      updated.stats.currentBookId = territory.id;
+      updated.stats.currentChapterNum = chapterNum + 1;
+    } else {
+      const tIdx = BIBLE_TERRITORIES.findIndex(t => t.id === territory.id);
+      if (tIdx >= 0 && tIdx < BIBLE_TERRITORIES.length - 1) {
+        const nextTerritory = BIBLE_TERRITORIES[tIdx + 1];
+        updated.stats.currentBookId = nextTerritory.id;
+        updated.stats.currentChapterNum = 1;
+      }
+    }
+
     updated.stats.xp += gainedXP;
     updated.stats.dailyXP += gainedXP;
     updated.stats.readToday = true;
