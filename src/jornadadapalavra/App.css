@@ -254,3 +254,26 @@ body {
     font-size: 1.2rem !important;
   }
 }
+
+/* Micro-animations for Bible World SVG */
+@keyframes swayTree {
+  0%, 100% { transform: rotate(0deg); transform-origin: bottom center; }
+  50% { transform: rotate(3deg); transform-origin: bottom center; }
+}
+
+@keyframes flameFlicker {
+  0%, 100% { transform: scale(1) translateY(0); opacity: 0.95; }
+  50% { transform: scale(1.1) translateY(-2px); opacity: 1; }
+}
+
+@keyframes cloudFloat {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(30px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes particleGlow {
+  0%, 100% { opacity: 0.3; transform: translateY(0); }
+  50% { opacity: 0.9; transform: translateY(-8px); }
+}
+

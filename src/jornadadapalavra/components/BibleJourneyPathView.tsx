@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { UserProfile, BibleTerritory } from '../types';
 import { BIBLE_TERRITORIES, TOTAL_BIBLE_CHAPTERS, BibleJourneyService } from '../services/bibleJourneyService';
 import { audioService } from '../services/audioService';
-import { Check, Lock, Gift, Heart, Sparkles, Search, BookOpen } from 'lucide-react';
+import { CloudSVG, TreeSVG, PalmTreeSVG, CampfireSVG, PilgrimMascotSVG } from './BibleWorldSVG';
+import { LessonPreviewModal } from './LessonPreviewModal';
+import { Check, Lock, Gift, Heart, Sparkles, Search, BookOpen, Brain } from 'lucide-react';
 
 interface BibleJourneyPathViewProps {
   profile: UserProfile;
@@ -21,6 +23,19 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
 
+  // Lesson preview popup state
+  const [previewChapter, setPreviewChapter] = useState<{
+    bookId: string;
+    bookName: string;
+    chapterNum: number;
+    title: string;
+    historicalContext: string;
+    isCompleted: boolean;
+    isAvailable: boolean;
+  } | null>(null);
+
+  const activeNodeRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
@@ -29,6 +44,15 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
 
   const completedKeys = profile.stats.completedChapterKeys || [];
   const progressInfo = BibleJourneyService.getOverallProgress(completedKeys);
+
+  // Auto-scroll to active node on mount
+  useEffect(() => {
+    if (activeNodeRef.current) {
+      setTimeout(() => {
+        activeNodeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 300);
+    }
+  }, []);
 
   // Responsive zig-zag offsets depending on viewport width
   const isMobile = windowWidth <= 480;
@@ -43,18 +67,39 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
     return true;
   });
 
+  const handleNodeClick = (bookId: string, bookName: string, chNum: number, isCompleted: boolean, isAvailable: boolean) => {
+    if (!isAvailable) return;
+    audioService.playClick();
+    const ctx = BibleJourneyService.generateChapterContext(bookId, chNum);
+    setPreviewChapter({
+      bookId,
+      bookName,
+      chapterNum: chNum,
+      title: ctx.title,
+      historicalContext: ctx.historicalContext,
+      isCompleted,
+      isAvailable
+    });
+  };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20, maxWidth: 720, margin: '0 auto', width: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 780, margin: '0 auto', width: '100%', position: 'relative' }}>
       {/* Header Banner: Overall Bible Journey Progress */}
       <div className="glass-card" style={{
         background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(124, 58, 237, 0.25))',
         border: '2px solid rgba(245, 158, 11, 0.4)',
-        padding: isMobile ? 16 : 24
+        padding: isMobile ? 16 : 24,
+        position: 'relative',
+        overflow: 'hidden'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10, marginBottom: 12 }}>
+        {/* Floating background clouds */}
+        <CloudSVG style={{ position: 'absolute', top: 10, right: 20, opacity: 0.6, animation: 'cloudFloat 12s ease-in-out infinite' }} />
+        <CloudSVG style={{ position: 'absolute', bottom: 5, left: 15, opacity: 0.4, animation: 'cloudFloat 18s ease-in-out infinite reverse' }} />
+
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10, marginBottom: 12, position: 'relative', zIndex: 2 }}>
           <div>
             <span style={{ fontSize: isMobile ? '0.7rem' : '0.8rem', color: '#fbbf24', fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.8 }}>
-              🗺️ PEREGRINAÇÃO BÍBLICA • GÊNESIS A APOCALIPSE
+              🗺️ MUNDO DE AVENTURA BÍBLICA • GÊNESIS A APOCALIPSE
             </span>
             <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: isMobile ? '1.3rem' : '1.6rem', fontWeight: 800, color: '#ffffff', marginTop: 2 }}>
               Jornada na Palavra de Deus
@@ -62,10 +107,10 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
           </div>
 
           <div style={{
-            background: 'rgba(0,0,0,0.4)',
+            background: 'rgba(0,0,0,0.5)',
             padding: isMobile ? '6px 12px' : '8px 16px',
             borderRadius: 14,
-            border: '1px solid rgba(245, 158, 11, 0.3)',
+            border: '1px solid rgba(245, 158, 11, 0.4)',
             color: '#fbbf24',
             fontFamily: 'Outfit, sans-serif',
             fontWeight: 800,
@@ -76,13 +121,13 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
         </div>
 
         {/* Progress Bar */}
-        <div className="progress-bar-container" style={{ height: 12, marginBottom: 10 }}>
+        <div className="progress-bar-container" style={{ height: 12, marginBottom: 10, position: 'relative', zIndex: 2 }}>
           <div className="progress-bar-fill" style={{ width: `${progressInfo.percentage}%` }} />
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: isMobile ? '0.78rem' : '0.85rem', color: '#d1d5db', fontWeight: 600, flexWrap: 'wrap', gap: 4 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: isMobile ? '0.78rem' : '0.85rem', color: '#d1d5db', fontWeight: 600, flexWrap: 'wrap', gap: 4, position: 'relative', zIndex: 2 }}>
           <span>Capítulos lidos: <strong>{progressInfo.totalCompleted}</strong> de {TOTAL_BIBLE_CHAPTERS}</span>
-          <span>66 Livros</span>
+          <span>66 Livros da Bíblia</span>
         </div>
       </div>
 
@@ -102,7 +147,7 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
             <Heart size={24} color="#ef4444" fill="#ef4444" />
             <div>
               <h4 style={{ color: '#ffffff', fontWeight: 800, fontSize: '0.95rem' }}>Sem Vidas no Momento! ❤️</h4>
-              <p style={{ color: '#d1d5db', fontSize: '0.8rem' }}>Recarregue na Loja por XP para continuar.</p>
+              <p style={{ color: '#d1d5db', fontSize: '0.8rem' }}>Recarregue na Loja por XP para continuar sua caminhada.</p>
             </div>
           </div>
 
@@ -175,7 +220,7 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
         </div>
       </div>
 
-      {/* Territories Loop */}
+      {/* Territories / World Regions Loop */}
       {filteredTerritories.map((territory) => {
         let completedInBook = 0;
         for (let ch = 1; ch <= territory.chaptersCount; ch++) {
@@ -186,23 +231,50 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
         const isBookFullyCompleted = completedInBook >= territory.chaptersCount;
         const isChestClaimed = profile.stats.claimedChestBookIds?.includes(territory.id);
 
+        // Environment Background Customizations
+        let envBg = 'linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(6, 78, 59, 0.7))';
+        let landscapeElement = <TreeSVG size={isMobile ? 36 : 46} color="#10b981" />;
+
+        if (territory.id === 'ex' || territory.id === 'lv' || territory.id === 'nm' || territory.id === 'dt') {
+          envBg = 'linear-gradient(135deg, rgba(217, 119, 6, 0.3), rgba(120, 53, 15, 0.7))';
+          landscapeElement = (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <PalmTreeSVG size={isMobile ? 34 : 44} />
+              <CampfireSVG size={isMobile ? 24 : 32} />
+            </div>
+          );
+        } else if (territory.id === 'sl' || territory.id === 'pv') {
+          envBg = 'linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(59, 7, 100, 0.7))';
+          landscapeElement = <TreeSVG size={isMobile ? 36 : 46} color="#a78bfa" />;
+        } else if (territory.testament === 'NEW') {
+          envBg = 'linear-gradient(135deg, rgba(6, 182, 212, 0.3), rgba(30, 20, 48, 0.8))';
+          landscapeElement = <TreeSVG size={isMobile ? 36 : 46} color="#38bdf8" />;
+        }
+
         return (
-          <div key={territory.id} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            {/* Territory Header Banner */}
+          <div key={territory.id} style={{ display: 'flex', flexDirection: 'column', gap: 16, position: 'relative' }}>
+            {/* Territory Header Banner with Environment World Scenery */}
             <div className="glass-card" style={{
-              background: `linear-gradient(135deg, ${territory.color}35, rgba(30, 20, 48, 0.9))`,
-              borderLeft: `5px solid ${territory.color}`,
-              padding: isMobile ? '14px 16px' : '20px 24px',
+              background: envBg,
+              borderLeft: `6px solid ${territory.color}`,
+              padding: isMobile ? '16px' : '22px 26px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              gap: 10
+              gap: 12,
+              position: 'relative',
+              overflow: 'hidden'
             }}>
-              <div>
+              {/* Background SVG Scenery Objects */}
+              <div style={{ position: 'absolute', right: 20, bottom: -4, opacity: 0.8, pointerEvents: 'none' }}>
+                {landscapeElement}
+              </div>
+
+              <div style={{ position: 'relative', zIndex: 2 }}>
                 <span style={{ fontSize: '0.7rem', fontWeight: 800, color: territory.color, textTransform: 'uppercase', letterSpacing: 0.8 }}>
                   TERRITÓRIO {territory.testament === 'OLD' ? 'ANTIGO' : 'NOVO'} TESTAMENTO • {territory.chaptersCount} CAPÍTULOS
                 </span>
-                <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: isMobile ? '1.3rem' : '1.5rem', fontWeight: 800, color: '#ffffff', marginTop: 2 }}>
+                <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: isMobile ? '1.3rem' : '1.6rem', fontWeight: 800, color: '#ffffff', marginTop: 2 }}>
                   {territory.name}
                 </h3>
                 <p style={{ color: '#d1d5db', fontSize: isMobile ? '0.78rem' : '0.85rem', marginTop: 2 }}>
@@ -211,27 +283,30 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
               </div>
 
               <div style={{
-                width: isMobile ? 40 : 48,
-                height: isMobile ? 40 : 48,
-                borderRadius: 12,
-                background: `${territory.color}25`,
+                width: isMobile ? 44 : 54,
+                height: isMobile ? 44 : 54,
+                borderRadius: 14,
+                background: `${territory.color}30`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: isMobile ? '1.3rem' : '1.6rem',
-                flexShrink: 0
+                fontSize: isMobile ? '1.4rem' : '1.8rem',
+                flexShrink: 0,
+                position: 'relative',
+                zIndex: 2
               }}>
                 {territory.icon}
               </div>
             </div>
 
-            {/* Chapters Trail Nodes (Responsive Zig-Zag Layout) */}
+            {/* Chapters Trail Nodes & Micro-Scenery Objects */}
             <div style={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: isMobile ? 18 : 22,
-              padding: '10px 0'
+              gap: isMobile ? 22 : 28,
+              padding: '16px 0',
+              position: 'relative'
             }}>
               {Array.from({ length: territory.chaptersCount }, (_, i) => i + 1).map((chNum, chIdx) => {
                 const chapterKey = BibleJourneyService.getChapterKey(territory.id, chNum);
@@ -243,9 +318,13 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
 
                 const currentOffset = offsets[chIdx % offsets.length];
 
+                // Special node types (Quiz)
+                const isQuizNode = chNum % 5 === 0;
+
                 return (
                   <div
                     key={chapterKey}
+                    ref={isCurrentActive ? activeNodeRef : null}
                     style={{
                       transform: `translateX(${currentOffset}px)`,
                       position: 'relative',
@@ -254,38 +333,67 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
                       alignItems: 'center'
                     }}
                   >
-                    {/* Active Chapter Badge */}
+                    {/* Side Decorative Scenery (Trees / Tents / Campfire) */}
+                    {chIdx % 3 === 0 && (
+                      <div style={{
+                        position: 'absolute',
+                        left: currentOffset > 0 ? -48 : 'auto',
+                        right: currentOffset <= 0 ? -48 : 'auto',
+                        top: -6,
+                        opacity: 0.7,
+                        pointerEvents: 'none'
+                      }}>
+                        {territory.testament === 'OLD' && territory.id === 'ex' ? (
+                          <CampfireSVG size={28} />
+                        ) : (
+                          <TreeSVG size={32} color={territory.color} />
+                        )}
+                      </div>
+                    )}
+
+                    {/* Active Mascot Pilgrim standing on current chapter */}
                     {isCurrentActive && (
                       <div style={{
                         position: 'absolute',
-                        top: isMobile ? -28 : -34,
-                        background: 'linear-gradient(135deg, #fbbf24, #d97706)',
-                        color: '#000000',
-                        padding: isMobile ? '3px 8px' : '4px 10px',
-                        borderRadius: 12,
-                        fontWeight: 800,
-                        fontSize: isMobile ? '0.68rem' : '0.75rem',
-                        boxShadow: '0 4px 10px rgba(245, 158, 11, 0.5)',
-                        whiteSpace: 'nowrap',
+                        top: isMobile ? -54 : -64,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        zIndex: 10,
                         animation: 'bounce 1.5s infinite'
                       }}>
-                        🚶 Capítulo Atual
+                        <PilgrimMascotSVG size={isMobile ? 42 : 52} />
+                        <div style={{
+                          background: 'linear-gradient(135deg, #fbbf24, #d97706)',
+                          color: '#000000',
+                          padding: '2px 8px',
+                          borderRadius: 10,
+                          fontWeight: 800,
+                          fontSize: '0.68rem',
+                          boxShadow: '0 3px 8px rgba(245, 158, 11, 0.6)',
+                          whiteSpace: 'nowrap',
+                          marginTop: -4
+                        }}>
+                          Você está aqui 🚶
+                        </div>
                       </div>
                     )}
 
                     {/* Circular 3D Chapter Node Button */}
                     <button
                       disabled={!isAvailable}
-                      onClick={() => {
-                        if (isAvailable) {
-                          audioService.playClick();
-                          onOpenChapter(territory.id, chNum);
-                        }
-                      }}
+                      onClick={() => handleNodeClick(territory.id, territory.name, chNum, isCompleted, isAvailable)}
                       className={`node-3d ${isCompleted ? 'completed' : isCurrentActive ? 'active' : 'locked'}`}
+                      style={{
+                        width: isQuizNode ? (isMobile ? 64 : 76) : undefined,
+                        height: isQuizNode ? (isMobile ? 64 : 76) : undefined,
+                        border: isQuizNode ? '2px stroke #fbbf24' : undefined
+                      }}
                     >
                       {isCompleted ? (
                         <Check size={isMobile ? 24 : 32} color="#ffffff" />
+                      ) : isQuizNode ? (
+                        <Brain size={isMobile ? 26 : 32} color={isCurrentActive ? '#000000' : '#ffffff'} />
                       ) : isAvailable ? (
                         <span style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 800, fontSize: isMobile ? '1.05rem' : '1.2rem', color: isCurrentActive ? '#000000' : '#ffffff' }}>
                           {chNum}
@@ -295,7 +403,7 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
                       )}
                     </button>
 
-                    {/* Node Title Label */}
+                    {/* Node Label Title */}
                     <div style={{
                       marginTop: 4,
                       fontSize: isMobile ? '0.72rem' : '0.8rem',
@@ -303,14 +411,14 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
                       color: isCompleted ? '#34d399' : isCurrentActive ? '#fbbf24' : '#6b7280',
                       textAlign: 'center'
                     }}>
-                      Capítulo {chNum}
+                      {isQuizNode ? `Quiz Cap. ${chNum}` : `Capítulo ${chNum}`}
                     </div>
                   </div>
                 );
               })}
 
               {/* End of Territory Reward Chest */}
-              <div style={{ marginTop: 8, width: '100%', maxWidth: 440 }}>
+              <div style={{ marginTop: 12, width: '100%', maxWidth: 440 }}>
                 {isChestClaimed ? (
                   <div style={{
                     background: 'rgba(16, 185, 129, 0.15)',
@@ -362,7 +470,7 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
                     textAlign: 'center'
                   }}>
                     <Gift size={18} color="#fbbf24" />
-                    <span>Baú de {territory.name} (Conclua os {territory.chaptersCount} capítulos)</span>
+                    <span>Baú de {territory.name} (Conclua todos os {territory.chaptersCount} capítulos)</span>
                   </div>
                 )}
               </div>
@@ -371,10 +479,28 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
         );
       })}
 
+      {/* Lesson Preview Modal Card Popup */}
+      {previewChapter && (
+        <LessonPreviewModal
+          bookName={previewChapter.bookName}
+          chapterNum={previewChapter.chapterNum}
+          title={previewChapter.title}
+          historicalContext={previewChapter.historicalContext}
+          isCompleted={previewChapter.isCompleted}
+          isAvailable={previewChapter.isAvailable}
+          onStartLesson={() => {
+            const { bookId, chapterNum } = previewChapter;
+            setPreviewChapter(null);
+            onOpenChapter(bookId, chapterNum);
+          }}
+          onClose={() => setPreviewChapter(null)}
+        />
+      )}
+
       <style>{`
         @keyframes bounce {
           0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-4px); }
+          50% { transform: translateY(-6px); }
         }
         @keyframes pulseGlow {
           0%, 100% { box-shadow: 0 0 15px rgba(245, 158, 11, 0.6); }
