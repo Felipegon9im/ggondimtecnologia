@@ -1,5 +1,6 @@
 import type { BibleTerritory, LeagueTier, ChapterContext, ChapterQuestion, RankingShiftInfo, LeaderboardUser } from '../types';
 import ALL_BOOKS_DATA from '../data/allBibleBooks.json';
+import { QuizBankService } from './quizBankService';
 
 export const TOTAL_BIBLE_CHAPTERS = 1189;
 
@@ -445,7 +446,8 @@ export class BibleJourneyService {
 
   public static generateChapterContext(bookId: string, chapterNum: number): ChapterContext {
     const territory = BIBLE_TERRITORIES.find(t => t.id.toLowerCase() === bookId.toLowerCase()) || BIBLE_TERRITORIES[0];
-    const questionsBank = this.generate10QuestionsForChapter(bookId, territory.name, chapterNum);
+    const quizBankObj = QuizBankService.getQuizBankForChapter(bookId, chapterNum);
+    const questionsBank = quizBankObj.perguntas;
 
     // Pick 1 representative question from the 10-question bank for quick preview
     const sampleQ = questionsBank[0];
