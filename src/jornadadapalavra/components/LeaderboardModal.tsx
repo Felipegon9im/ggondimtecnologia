@@ -1,5 +1,6 @@
 import React from 'react';
-import type { UserProfile, LeaderboardUser } from '../types';
+import type { UserProfile } from '../types';
+import { LEAGUE_TIERS, BibleJourneyService } from '../services/bibleJourneyService';
 import { X, Trophy } from 'lucide-react';
 
 interface LeaderboardModalProps {
@@ -8,26 +9,25 @@ interface LeaderboardModalProps {
 }
 
 export const LeaderboardModal: React.FC<LeaderboardModalProps> = ({ profile, onClose }) => {
-  const mockLeaderboard: LeaderboardUser[] = [
-    { rank: 1, name: 'Pr. Mateus', xp: 2450, avatar: '👨‍💼', league: 'Liga de Ouro' },
-    { rank: 2, name: 'Ana Clara', xp: 1980, avatar: '👩', league: 'Liga de Ouro' },
-    { rank: 3, name: profile.name, xp: profile.stats.xp, avatar: profile.gender === 'MASCULINO' ? '👨' : '👩', league: 'Liga de Ouro', isUser: true },
-    { rank: 4, name: 'Gabriel Santos', xp: 1420, avatar: '👨', league: 'Liga de Prata' },
-    { rank: 5, name: 'Ruth Oliveira', xp: 1100, avatar: '👩‍🦱', league: 'Liga de Prata' },
-    { rank: 6, name: 'Lucas Teófilo', xp: 850, avatar: '👨', league: 'Liga de Bronze' }
-  ].sort((a, b) => b.xp - a.xp).map((item, idx) => ({ ...item, rank: idx + 1 }));
+  const currentLeague = BibleJourneyService.getLeagueTier(profile.stats.xp);
+  const leaderboardList = BibleJourneyService.getMockLeaderboard(
+    profile.stats.xp,
+    profile.name,
+    profile.gender
+  );
 
   return (
     <div className="modal-overlay">
       <div className="glass-card" style={{
-        maxWidth: 520,
+        maxWidth: 580,
         width: '100%',
-        maxHeight: '85vh',
+        maxHeight: '88vh',
         overflowY: 'auto',
         padding: 28,
         position: 'relative',
         border: '2px solid #fbbf24'
       }}>
+        {/* Close Button */}
         <button 
           onClick={onClose}
           style={{
@@ -45,25 +45,85 @@ export const LeaderboardModal: React.FC<LeaderboardModalProps> = ({ profile, onC
           <X size={20} />
         </button>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-          <Trophy size={28} color="#fbbf24" />
+        {/* Title Header */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+          <Trophy size={32} color="#fbbf24" />
           <div>
             <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '1.6rem', fontWeight: 800, color: '#fbbf24' }}>
               Liga dos Peregrinos 🏆
             </h2>
-            <span style={{ fontSize: '0.8rem', color: '#a78bfa', fontWeight: 700 }}>Classificação Semanal de XP</span>
+            <span style={{ fontSize: '0.8rem', color: '#a78bfa', fontWeight: 700 }}>Classificação Competitiva da Jornada</span>
           </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {mockLeaderboard.map(user => (
+        {/* User Current League Banner */}
+        <div style={{
+          background: `linear-gradient(135deg, ${currentLeague.color}30, rgba(30, 20, 48, 0.9))`,
+          borderLeft: `6px solid ${currentLeague.color}`,
+          padding: 16,
+          borderRadius: 14,
+          marginBottom: 20,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}>
+          <div>
+            <span style={{ fontSize: '0.75rem', fontWeight: 800, color: currentLeague.color, textTransform: 'uppercase' }}>
+              SUA DIVISÃO ATUAL
+            </span>
+            <h3 style={{ color: '#ffffff', fontWeight: 800, fontSize: '1.2rem', marginTop: 2 }}>
+              {currentLeague.name}
+            </h3>
+            <p style={{ color: '#d1d5db', fontSize: '0.8rem', marginTop: 2 }}>
+              {currentLeague.description}
+            </p>
+          </div>
+
+          <div style={{ fontSize: '2rem' }}>
+            {currentLeague.icon}
+          </div>
+        </div>
+
+        {/* All League Tiers Bar */}
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#9ca3af', textTransform: 'uppercase', marginBottom: 8 }}>
+            DIVISÕES DA LIGA DOS PEREGRINOS:
+          </div>
+          <div style={{ display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 6 }}>
+            {LEAGUE_TIERS.map(tier => {
+              const isCurrent = tier.id === currentLeague.id;
+              return (
+                <div
+                  key={tier.id}
+                  style={{
+                    padding: '6px 12px',
+                    borderRadius: 10,
+                    background: isCurrent ? `${tier.color}35` : 'rgba(255,255,255,0.03)',
+                    border: isCurrent ? `2px solid ${tier.color}` : '1px solid rgba(255,255,255,0.08)',
+                    color: isCurrent ? '#ffffff' : '#9ca3af',
+                    fontWeight: 700,
+                    fontSize: '0.8rem',
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0
+                  }}
+                >
+                  {tier.icon} {tier.name.replace(/.*Liga d[aeos] /i, '')} ({tier.minXP} XP)
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Competitors Ranking Table */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {leaderboardList.map(user => (
             <div
               key={user.name}
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: 14,
+                padding: '12px 16px',
                 borderRadius: 14,
                 background: user.isUser ? 'rgba(245, 158, 11, 0.2)' : 'rgba(255,255,255,0.03)',
                 border: user.isUser ? '2px solid #fbbf24' : '1px solid rgba(255,255,255,0.06)'
@@ -75,12 +135,12 @@ export const LeaderboardModal: React.FC<LeaderboardModalProps> = ({ profile, onC
                   fontWeight: 800,
                   fontSize: '1.1rem',
                   color: user.rank === 1 ? '#fbbf24' : user.rank === 2 ? '#9ca3af' : user.rank === 3 ? '#b45309' : '#ffffff',
-                  minWidth: 24
+                  minWidth: 26
                 }}>
                   #{user.rank}
                 </span>
 
-                <span style={{ fontSize: '1.5rem' }}>{user.avatar}</span>
+                <span style={{ fontSize: '1.4rem' }}>{user.avatar}</span>
 
                 <div>
                   <h4 style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.95rem' }}>
@@ -90,7 +150,7 @@ export const LeaderboardModal: React.FC<LeaderboardModalProps> = ({ profile, onC
                 </div>
               </div>
 
-              <div style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 800, color: '#fbbf24', fontSize: '1.1rem' }}>
+              <div style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 800, color: '#fbbf24', fontSize: '1.05rem' }}>
                 {user.xp} XP
               </div>
             </div>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import type { UserProfile, AppViewMode, AppLanguage } from '../types';
-import { LEVELS } from '../data/levelsData';
+import { BibleJourneyService } from '../services/bibleJourneyService';
 import { audioService } from '../services/audioService';
-import { Flame, Zap, Heart, ShoppingBag, Target, Trophy, Award, Volume2, VolumeX, Download, BookOpen, MapPin, Compass, Layers } from 'lucide-react';
+import { Flame, Zap, Heart, ShoppingBag, Target, Trophy, Award, Volume2, VolumeX, Download, BookOpen, Compass } from 'lucide-react';
 
 interface NavbarProps {
   profile: UserProfile;
@@ -30,7 +30,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onInstallPwa
 }) => {
   const [isMuted, setIsMuted] = useState(audioService.getMuted());
-  const currentLevel = LEVELS.find(l => l.id === profile.stats.currentLevelId) || LEVELS[0];
+  const leagueTier = BibleJourneyService.getLeagueTier(profile.stats.xp);
+  const progressInfo = BibleJourneyService.getOverallProgress(profile.stats.completedChapterKeys || []);
 
   const handleToggleMute = () => {
     const muted = audioService.toggleMute();
@@ -42,13 +43,13 @@ export const Navbar: React.FC<NavbarProps> = ({
       position: 'sticky',
       top: 0,
       zIndex: 500,
-      background: 'rgba(13, 9, 20, 0.88)',
+      background: 'rgba(13, 9, 20, 0.92)',
       backdropFilter: 'blur(16px)',
-      borderBottom: '1px solid rgba(245, 158, 11, 0.2)',
+      borderBottom: '1px solid rgba(245, 158, 11, 0.25)',
       padding: '12px 20px'
     }}>
       <div style={{
-        maxWidth: 1050,
+        maxWidth: 1100,
         margin: '0 auto',
         display: 'flex',
         alignItems: 'center',
@@ -56,14 +57,14 @@ export const Navbar: React.FC<NavbarProps> = ({
         flexWrap: 'wrap',
         gap: 12
       }}>
-        {/* Title & Brand */}
+        {/* App Title & Brand */}
         <div 
-          onClick={() => { audioService.playClick(); setMode('FEED'); }}
+          onClick={() => { audioService.playClick(); setMode('JOURNEY_PATH'); }}
           style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}
         >
           <div style={{
-            width: 42,
-            height: 42,
+            width: 44,
+            height: 44,
             borderRadius: 14,
             background: 'linear-gradient(135deg, #fbbf24, #d97706)',
             display: 'flex',
@@ -76,17 +77,17 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div>
             <h1 style={{
               fontFamily: 'Cinzel, serif',
-              fontSize: '1.25rem',
+              fontSize: '1.3rem',
               fontWeight: 800,
               color: '#fbbf24',
               letterSpacing: 1,
               lineHeight: 1.1
             }}>
-              Jornada da Palavra
+              Jornada Bíblica
             </h1>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 2 }}>
-              <span style={{ fontSize: '0.7rem', color: '#a78bfa', fontWeight: 700 }}>
-                {currentLevel.icon} {currentLevel.name}
+              <span style={{ fontSize: '0.75rem', color: '#a78bfa', fontWeight: 700 }}>
+                {leagueTier.icon} {leagueTier.name} • {progressInfo.percentage}%
               </span>
             </div>
           </div>
@@ -95,37 +96,23 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Navigation Tabs */}
         <nav style={{ display: 'flex', alignItems: 'center', gap: 6, overflowX: 'auto', padding: '4px 0' }}>
           <button 
-            onClick={() => { audioService.playClick(); setMode('FEED'); }}
-            className={`btn-nav ${currentMode === 'FEED' ? 'active' : ''}`}
+            onClick={() => { audioService.playClick(); setMode('JOURNEY_PATH'); }}
+            className={`btn-nav ${currentMode === 'JOURNEY_PATH' ? 'active' : ''}`}
           >
-            <Compass size={16} /> <span className="nav-text">Feed</span>
+            <Compass size={16} /> <span className="nav-text">Trilha Bíblica</span>
           </button>
 
           <button 
-            onClick={() => { audioService.playClick(); setMode('MAP'); }}
-            className={`btn-nav ${currentMode === 'MAP' ? 'active' : ''}`}
+            onClick={() => { audioService.playClick(); setMode('BIBLE_READER'); }}
+            className={`btn-nav ${currentMode === 'BIBLE_READER' ? 'active' : ''}`}
           >
-            <MapPin size={16} /> <span className="nav-text">Trilha</span>
-          </button>
-
-          <button 
-            onClick={() => { audioService.playClick(); setMode('BIBLE'); }}
-            className={`btn-nav ${currentMode === 'BIBLE' ? 'active' : ''}`}
-          >
-            <BookOpen size={16} /> <span className="nav-text">Bíblia</span>
-          </button>
-
-          <button 
-            onClick={() => { audioService.playClick(); setMode('IMPACT'); }}
-            className={`btn-nav ${currentMode === 'IMPACT' ? 'active' : ''}`}
-          >
-            <Layers size={16} /> <span className="nav-text">Impacto</span>
+            <BookOpen size={16} /> <span className="nav-text">Leitor Bíblico</span>
           </button>
         </nav>
 
-        {/* Duolingo Counters & Control Modals */}
+        {/* Gamification Stats Counters */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          {/* Hearts Counter */}
+          {/* Hearts */}
           <div 
             onClick={() => { audioService.playClick(); onOpenShop(); }}
             style={{
@@ -147,7 +134,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span>{profile.stats.hearts}</span>
           </div>
 
-          {/* Streak */}
+          {/* Streak (Caminhada do Peregrino) */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -159,7 +146,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             fontSize: '0.85rem',
             fontWeight: 800,
             color: '#fbbf24'
-          }} title="Sequência Diária">
+          }} title="Caminhada do Peregrino (Sequência Diária)">
             <Flame size={16} fill="#fbbf24" />
             <span>{profile.stats.streakDays}d</span>
           </div>
@@ -181,7 +168,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span>{profile.stats.xp} XP</span>
           </div>
 
-          {/* Badges Button */}
+          {/* Badges */}
           <button 
             onClick={() => { audioService.playClick(); onOpenBadges(); }}
             style={{
@@ -199,7 +186,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <Award size={17} color="#fbbf24" />
           </button>
 
-          {/* Quests Button */}
+          {/* Quests */}
           <button 
             onClick={() => { audioService.playClick(); onOpenQuests(); }}
             style={{
@@ -217,7 +204,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <Target size={17} color="#fbbf24" />
           </button>
 
-          {/* Leaderboard Button */}
+          {/* Leaderboard */}
           <button 
             onClick={() => { audioService.playClick(); onOpenLeaderboard(); }}
             style={{
@@ -230,12 +217,12 @@ export const Navbar: React.FC<NavbarProps> = ({
               display: 'flex',
               alignItems: 'center'
             }}
-            title="Classificação dos Peregrinos"
+            title="Liga dos Peregrinos"
           >
             <Trophy size={17} color="#fbbf24" />
           </button>
 
-          {/* Shop Button */}
+          {/* Shop */}
           <button 
             onClick={() => { audioService.playClick(); onOpenShop(); }}
             style={{

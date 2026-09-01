@@ -2,44 +2,15 @@ export type AppLanguage = 'PT' | 'ES' | 'EN';
 export type AvatarGender = 'MASCULINO' | 'FEMININO';
 export type AvatarStyle = 'BIBLICO' | 'ATUAL';
 
-export type LevelId = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+export type LeagueId = 'CAMINHO' | 'JORNADA' | 'DISCIPULOS' | 'PEREGRINOS' | 'GUARDIOES' | 'MENSAGEIROS';
 
-export interface LevelInfo {
-  id: LevelId;
+export interface LeagueTier {
+  id: LeagueId;
   name: string;
-  concept: string;       // e.g. "Receber", "Conhecer", "Compartilhar", "Alcançar"
-  evolutionDesc: string; // e.g. "Início da caminhada como semente"
-  avatarVisual: string;  // e.g. "Roupa simples + Celular"
-  resourcesUnlocked: string[];
-  earlyAccessPrice?: string; // e.g. "R$ 9,90"
-  color: string;
-  icon: string;
   minXP: number;
-}
-
-export interface Devotional {
-  id: string;
-  title: string;
-  passage: string;
-  passageText: string;
-  reflection: string;
-  date: string; // 'YYYY-MM-DD'
-  videoUrl?: string;
-  videoTitle?: string;
-  quizQuestion: string;
-  quizOptions: string[];
-  quizAnswer: number;
-  quizExplanation: string;
-}
-
-export interface BibleVerse {
-  number: number;
-  text: string;
-}
-
-export interface BibleChapter {
-  chapter: number;
-  verses: BibleVerse[];
+  icon: string;
+  color: string;
+  description: string;
 }
 
 export interface BibleBook {
@@ -47,6 +18,48 @@ export interface BibleBook {
   name: string;
   testament: 'OLD' | 'NEW';
   chaptersCount: number;
+}
+
+export interface BibleTerritory {
+  id: string;
+  name: string;
+  testament: 'OLD' | 'NEW';
+  chaptersCount: number;
+  startGlobalIndex: number; // 1 to 1189
+  endGlobalIndex: number;
+  icon: string;
+  color: string;
+  description: string;
+}
+
+export interface BibleVerse {
+  number: number;
+  text: string;
+}
+
+export interface ChapterContext {
+  bookId: string;
+  bookName: string;
+  chapterNumber: number;
+  title: string;
+  historicalContext: string;
+  keyCharacters: string[];
+  importantEvents: string[];
+  curiosities: string;
+  quizQuestion: string;
+  quizOptions: string[];
+  quizAnswer: number;
+  quizExplanation: string;
+  reflection: string;
+}
+
+export interface RankingShiftInfo {
+  previousRank: number;
+  newRank: number;
+  passedCount: number;
+  previousLeague: string;
+  newLeague: string;
+  isLeagueUp: boolean;
 }
 
 export interface Badge {
@@ -74,25 +87,26 @@ export interface LeaderboardUser {
   name: string;
   xp: number;
   avatar: string;
-  league: string; // 'Bronze' | 'Prata' | 'Ouro' | 'Diamante'
+  league: string;
   isUser?: boolean;
 }
 
 export interface UserStats {
   xp: number;
-  hearts: number; // 0 to 5 (Duolingo lives)
+  hearts: number;
   maxHearts: number;
   streakDays: number;
   streakFreeze: boolean;
   lastActiveDate: string; // 'YYYY-MM-DD'
   readToday: boolean;
-  devotionalsCompleted: number;
-  quizzesCorrect: number;
-  sharedCount: number;
-  peopleReached: number;
+  completedChapterKeys: string[]; // e.g. ["gn-1", "gn-2", "ex-1"]
+  claimedChestBookIds: string[]; // e.g. ["gn", "ex"]
+  currentBookId: string;
+  currentChapterNum: number;
+  currentLeagueId: LeagueId;
+  currentRank: number;
   dailyGoalXP: number;
   dailyXP: number;
-  currentLevelId: LevelId;
 }
 
 export interface UserProfile {
@@ -101,43 +115,15 @@ export interface UserProfile {
   gender: AvatarGender;
   style: AvatarStyle;
   stats: UserStats;
-  completedDevotionalIds: string[];
-  completedLessonIds: string[];
-  unlockedLevelIds: LevelId[];
   badges: Badge[];
   quests: Quest[];
-  claimedChestUnitIds?: number[];
   hasOnboarded: boolean;
 }
 
-export interface DuolingoLesson {
-  id: string;
-  unitId: number;
-  title: string;
-  icon: string;
-  mascotTip: string;
-  question: string;
-  options: string[];
-  answer: number;
-  explanation: string;
-}
-
-export interface DuolingoUnit {
-  id: number;
-  title: string;
-  description: string;
-  levelId: LevelId;
-  color: string;
-  lessons: DuolingoLesson[];
-}
-
 export type AppViewMode = 
-  | 'FEED'
-  | 'MAP'
-  | 'BIBLE'
-  | 'QUIZ'
-  | 'IMPACT'
-  | 'EARLY_ACCESS'
-  | 'SHOP'
+  | 'JOURNEY_PATH'
+  | 'BIBLE_READER'
+  | 'LEADERBOARD'
   | 'QUESTS'
-  | 'LEADERBOARD';
+  | 'SHOP'
+  | 'BADGES';

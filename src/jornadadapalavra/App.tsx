@@ -1,27 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import type { UserProfile, AppViewMode, AppLanguage, Devotional, LevelInfo, DuolingoLesson } from './types';
+import type { UserProfile, AppViewMode, AppLanguage, BibleTerritory, RankingShiftInfo } from './types';
 import { StorageService } from './services/storageService';
+import { BibleJourneyService, BIBLE_TERRITORIES } from './services/bibleJourneyService';
+import { audioService } from './services/audioService';
 import { Navbar } from './components/Navbar';
 import { OnboardingModal } from './components/OnboardingModal';
-import { FeedView } from './components/FeedView';
-import { DuolingoPathView } from './components/DuolingoPathView';
+import { BibleJourneyPathView } from './components/BibleJourneyPathView';
 import { BibleReader } from './components/BibleReader';
-import { QuizModal } from './components/QuizModal';
-import { DuolingoQuizModal } from './components/DuolingoQuizModal';
-import { ImpactPanel } from './components/ImpactPanel';
-import { EarlyAccessModal } from './components/EarlyAccessModal';
-import { BadgesModal } from './components/BadgesModal';
+import { ChapterStudyModal } from './components/ChapterStudyModal';
+import { ChapterCelebrationModal } from './components/ChapterCelebrationModal';
+import { BookCompletionModal } from './components/BookCompletionModal';
 import { ShopModal } from './components/ShopModal';
 import { QuestsModal } from './components/QuestsModal';
 import { LeaderboardModal } from './components/LeaderboardModal';
+import { BadgesModal } from './components/BadgesModal';
 import './App.css';
 
 export const App: React.FC = () => {
   const [profile, setProfile] = useState<UserProfile>(StorageService.loadProfile());
-  const [viewMode, setViewMode] = useState<AppViewMode>('FEED');
-  const [activeQuizDevotional, setActiveQuizDevotional] = useState<Devotional | null>(null);
-  const [activeDuolingoLesson, setActiveDuolingoLesson] = useState<DuolingoLesson | null>(null);
-  const [earlyAccessLevel, setEarlyAccessLevel] = useState<LevelInfo | null>(null);
+  const [viewMode, setViewMode] = useState<AppViewMode>('JOURNEY_PATH');
+
+  // Study Modal state
+  const [activeChapterStudy, setActiveChapterStudy] = useState<{ bookId: string; chapterNum: number } | null>(null);
+  
+  // Celebration Modals state
+  const [celebrationData, setCelebrationData] = useState<{
+    bookName: string;
+    chapterNum: number;
+    xpGained: number;
+    quizCorrect: boolean;
+    rankingShift: RankingShiftInfo;
+  } | null>(null);
+
+  const [bookCompletionTerritory, setBookCompletionTerritory] = useState<BibleTerritory | null>(null);
+
+  // General Modals
   const [isBadgesOpen, setIsBadgesOpen] = useState<boolean>(false);
   const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const [isQuestsOpen, setIsQuestsOpen] = useState<boolean>(false);
@@ -54,6 +67,86 @@ export const App: React.FC = () => {
     handleSaveProfile(updated);
   };
 
+  const handleOpenChapter = (bookId: string, chapterNum: number) => {
+    setActiveChapterStudy({ bookId, chapterNum });
+  };
+
+  const handleCompleteChapter = (bookId: string, chapterNum: number, quizCorrect: boolean) => {
+    setActiveChapterStudy(null);
+
+    const territory = BIBLE_TERRITORIES.find(t => t.id.toLowerCase() === bookId.toLowerCase()) || BIBLE_TERRITORIES[0];
+    const chapterKey = BibleJourneyService.getChapterKey(bookId, chapterNum);
+
+    const prevXP = profile.stats.xp;
+    const prevRank = profile.stats.currentRank || 7;
+
+    const gainedXP = 20 + (quizCorrect ? 10 : 0);
+    const updated = { ...profile };
+
+    if (!updated.stats.completedChapterKeys.includes(chapterKey)) {
+      updated.stats.completedChapterKeys.push(chapterKey);
+    }
+
+    updated.stats.xp += gainedXP;
+    updated.stats.dailyXP += gainedXP;
+    updated.stats.readToday = true;
+
+    // Update quest progress
+    const q1 = updated.quests.find(q => q.id === 'q1');
+    if (q1 && !q1.completed) {
+      q1.current += gainedXP;
+      if (q1.current >= q1.target) q1.completed = true;
+    }
+
+    const q2 = updated.quests.find(q => q.id === 'q2');
+    if (q2 && !q2.completed) {
+      q2.current = 1;
+      q2.completed = true;
+    }
+
+    // Calculate ranking shift & league update
+    const shiftInfo = BibleJourneyService.calculateRankingShift(prevXP, updated.stats.xp, prevRank);
+    updated.stats.currentRank = shiftInfo.newRank;
+    const newLeague = BibleJourneyService.getLeagueTier(updated.stats.xp);
+    updated.stats.currentLeagueId = newLeague.id;
+
+    handleSaveProfile(updated);
+
+    // Check if book was completed with this chapter
+    let completedInBook = 0;
+    for (let ch = 1; ch <= territory.chaptersCount; ch++) {
+      const key = BibleJourneyService.getChapterKey(territory.id, ch);
+      if (updated.stats.completedChapterKeys.includes(key)) completedInBook++;
+    }
+
+    audioService.playHarpChime();
+
+    if (completedInBook >= territory.chaptersCount && chapterNum === territory.chaptersCount) {
+      setBookCompletionTerritory(territory);
+    } else {
+      setCelebrationData({
+        bookName: territory.name,
+        chapterNum,
+        xpGained: gainedXP,
+        quizCorrect,
+        rankingShift: shiftInfo
+      });
+    }
+  };
+
+  const handleClaimBookChest = (territory: BibleTerritory) => {
+    audioService.playLevelUp();
+    const updated = { ...profile };
+    if (!updated.stats.claimedChestBookIds) updated.stats.claimedChestBookIds = [];
+
+    if (!updated.stats.claimedChestBookIds.includes(territory.id)) {
+      updated.stats.claimedChestBookIds.push(territory.id);
+      updated.stats.xp += 200;
+      handleSaveProfile(updated);
+      setBookCompletionTerritory(territory);
+    }
+  };
+
   return (
     <div className="app-container">
       {/* Onboarding Dialog if not completed */}
@@ -80,67 +173,50 @@ export const App: React.FC = () => {
 
       {/* Main Content Body */}
       <main className="main-content">
-        {viewMode === 'FEED' && (
-          <FeedView
+        {viewMode === 'JOURNEY_PATH' && (
+          <BibleJourneyPathView
             profile={profile}
-            onSaveProfile={handleSaveProfile}
-            onOpenQuiz={(dev) => setActiveQuizDevotional(dev)}
-            onGoToBible={() => setViewMode('BIBLE')}
-            onGoToMap={() => setViewMode('MAP')}
-          />
-        )}
-
-        {viewMode === 'MAP' && (
-          <DuolingoPathView
-            profile={profile}
-            onSaveProfile={handleSaveProfile}
-            onStartLesson={(lesson) => setActiveDuolingoLesson(lesson)}
+            onOpenChapter={handleOpenChapter}
+            onClaimBookChest={handleClaimBookChest}
             onOpenShop={() => setIsShopOpen(true)}
           />
         )}
 
-        {viewMode === 'BIBLE' && (
+        {viewMode === 'BIBLE_READER' && (
           <BibleReader
             profile={profile}
             onSaveProfile={handleSaveProfile}
           />
         )}
-
-        {viewMode === 'IMPACT' && (
-          <ImpactPanel
-            profile={profile}
-          />
-        )}
       </main>
 
-      {/* Duolingo Quiz Modal for Path Lessons */}
-      {activeDuolingoLesson && (
-        <DuolingoQuizModal
-          lesson={activeDuolingoLesson}
-          profile={profile}
-          onSaveProfile={handleSaveProfile}
-          onClose={() => setActiveDuolingoLesson(null)}
-          onOpenShop={() => setIsShopOpen(true)}
+      {/* Chapter Study Modal */}
+      {activeChapterStudy && (
+        <ChapterStudyModal
+          bookId={activeChapterStudy.bookId}
+          chapterNum={activeChapterStudy.chapterNum}
+          onCompleteChapter={handleCompleteChapter}
+          onClose={() => setActiveChapterStudy(null)}
         />
       )}
 
-      {/* Devotional Quiz Modal */}
-      {activeQuizDevotional && (
-        <QuizModal
-          devotional={activeQuizDevotional}
-          profile={profile}
-          onSaveProfile={handleSaveProfile}
-          onClose={() => setActiveQuizDevotional(null)}
+      {/* Chapter Completion Celebration Modal with Ranking Shift */}
+      {celebrationData && (
+        <ChapterCelebrationModal
+          bookName={celebrationData.bookName}
+          chapterNum={celebrationData.chapterNum}
+          xpGained={celebrationData.xpGained}
+          quizCorrect={celebrationData.quizCorrect}
+          rankingShift={celebrationData.rankingShift}
+          onClose={() => setCelebrationData(null)}
         />
       )}
 
-      {/* Early Access Modal */}
-      {earlyAccessLevel && (
-        <EarlyAccessModal
-          level={earlyAccessLevel}
-          profile={profile}
-          onSaveProfile={handleSaveProfile}
-          onClose={() => setEarlyAccessLevel(null)}
+      {/* Book Completion Celebration Modal */}
+      {bookCompletionTerritory && (
+        <BookCompletionModal
+          territory={bookCompletionTerritory}
+          onClose={() => setBookCompletionTerritory(null)}
         />
       )}
 
@@ -187,7 +263,7 @@ export const App: React.FC = () => {
         borderTop: '1px solid rgba(255,255,255,0.05)',
         marginTop: 'auto'
       }}>
-        <p>Jornada da Palavra &copy; 2026 G&G Tecnologia — Uma jornada diária de crescimento na Palavra.</p>
+        <p>Jornada Bíblica &copy; 2026 G&G Tecnologia — Uma jornada diária através de toda a Bíblia Sagrada.</p>
         <a href="/" style={{ color: '#fbbf24', textDecoration: 'none', marginTop: 6, display: 'inline-block' }}>
           &larr; Voltar ao site principal (ggondimtecnologia.com.br)
         </a>
