@@ -29,12 +29,21 @@ export const BIBLE_TERRITORIES: BibleTerritory[] = (ALL_BOOKS_DATA as RawBookMet
   let color = '#10b981';
   let icon = '📖';
   let description = `Território de ${book.name} com ${book.chaptersCount} capítulos.`;
+  let themeImage = '/gospels_jesus.jpg';
+
+  if (book.id === 'gn') {
+    themeImage = '/genesis_creation.png';
+  } else if (['ex', 'lv', 'nm', 'dt', 'js', 'jz', 'rt', '1sm', '2sm', '1rs', '2rs'].includes(book.id)) {
+    themeImage = '/exodus_redsea.jpg';
+  } else if (['sl', 'pv', 'ec', 'ct', 'is', 'jr', 'lm', 'ez', 'dn'].includes(book.id)) {
+    themeImage = '/psalms_worship.jpg';
+  }
 
   if (book.testament === 'OLD') {
-    if (start <= 187) { color = '#10b981'; icon = '🌱'; description = 'Pentateuco — A Criação, a Lei e a Origem.'; } // Pentateuch
-    else if (start <= 436) { color = '#f59e0b'; icon = '📜'; description = 'Livros Históricos — Reis, Batalhas e Reinos.'; } // Historical
-    else if (start <= 680) { color = '#8b5cf6'; icon = '✍️'; description = 'Livros Poéticos — Salmos, Provérbios e Sabedoria.'; } // Poetic
-    else { color = '#ef4444'; icon = '🔥'; description = 'Profetas — Mensagens de Visão e Esperança.'; } // Prophets
+    if (start <= 187) { color = '#10b981'; icon = '🌱'; description = 'Pentateuco — A Criação, a Lei e a Origem.'; }
+    else if (start <= 436) { color = '#f59e0b'; icon = '📜'; description = 'Livros Históricos — Reis, Batalhas e Reinos.'; }
+    else if (start <= 680) { color = '#8b5cf6'; icon = '✍️'; description = 'Livros Poéticos — Salmos, Provérbios e Sabedoria.'; }
+    else { color = '#ef4444'; icon = '🔥'; description = 'Profetas — Mensagens de Visão e Esperança.'; }
   } else {
     if (start <= 1013) { color = '#06b6d4'; icon = '✝️'; description = 'Evangelhos e Atos — A Vida de Jesus e a Igreja.'; }
     else if (start <= 1167) { color = '#3b82f6'; icon = '✉️'; description = 'Epístolas — Cartas Apostólicas de Ensinamento.'; }
@@ -50,7 +59,8 @@ export const BIBLE_TERRITORIES: BibleTerritory[] = (ALL_BOOKS_DATA as RawBookMet
     endGlobalIndex: end,
     icon,
     color,
-    description
+    description,
+    themeImage
   };
 });
 
@@ -158,6 +168,7 @@ export class BibleJourneyService {
       chapterNumber: chapterNum,
       title,
       historicalContext,
+      themeImage: territory.themeImage,
       keyCharacters,
       importantEvents,
       curiosities,

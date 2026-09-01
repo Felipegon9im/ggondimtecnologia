@@ -30,6 +30,7 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
     chapterNum: number;
     title: string;
     historicalContext: string;
+    themeImage?: string;
     isCompleted: boolean;
     isAvailable: boolean;
   } | null>(null);
@@ -77,6 +78,7 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
       chapterNum: chNum,
       title: ctx.title,
       historicalContext: ctx.historicalContext,
+      themeImage: ctx.themeImage,
       isCompleted,
       isAvailable
     });
@@ -232,11 +234,9 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
         const isChestClaimed = profile.stats.claimedChestBookIds?.includes(territory.id);
 
         // Environment Background Customizations
-        let envBg = 'linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(6, 78, 59, 0.7))';
         let landscapeElement = <TreeSVG size={isMobile ? 36 : 46} color="#10b981" />;
 
         if (territory.id === 'ex' || territory.id === 'lv' || territory.id === 'nm' || territory.id === 'dt') {
-          envBg = 'linear-gradient(135deg, rgba(217, 119, 6, 0.3), rgba(120, 53, 15, 0.7))';
           landscapeElement = (
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <PalmTreeSVG size={isMobile ? 34 : 44} />
@@ -244,40 +244,66 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
             </div>
           );
         } else if (territory.id === 'sl' || territory.id === 'pv') {
-          envBg = 'linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(59, 7, 100, 0.7))';
           landscapeElement = <TreeSVG size={isMobile ? 36 : 46} color="#a78bfa" />;
         } else if (territory.testament === 'NEW') {
-          envBg = 'linear-gradient(135deg, rgba(6, 182, 212, 0.3), rgba(30, 20, 48, 0.8))';
           landscapeElement = <TreeSVG size={isMobile ? 36 : 46} color="#38bdf8" />;
         }
 
         return (
           <div key={territory.id} style={{ display: 'flex', flexDirection: 'column', gap: 16, position: 'relative' }}>
-            {/* Territory Header Banner with Environment World Scenery */}
+            {/* Territory Header Banner with Cinematic Illustrative Theme Artwork */}
             <div className="glass-card" style={{
-              background: envBg,
+              position: 'relative',
+              overflow: 'hidden',
               borderLeft: `6px solid ${territory.color}`,
-              padding: isMobile ? '16px' : '22px 26px',
+              padding: isMobile ? '18px' : '24px 28px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               gap: 12,
-              position: 'relative',
-              overflow: 'hidden'
+              minHeight: isMobile ? 135 : 160
             }}>
+              {/* Background Theme Image with Ken Burns Zoom */}
+              {territory.themeImage && (
+                <div style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundImage: `url(${territory.themeImage})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  animation: 'kenBurnsZoom 20s infinite alternate ease-in-out',
+                  filter: 'brightness(0.6)',
+                  zIndex: 0
+                }} />
+              )}
+
+              {/* Gradient Overlay for Typography High Contrast */}
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: `linear-gradient(90deg, rgba(13, 9, 20, 0.9) 0%, rgba(13, 9, 20, 0.4) 100%)`,
+                zIndex: 1
+              }} />
+
               {/* Background SVG Scenery Objects */}
-              <div style={{ position: 'absolute', right: 20, bottom: -4, opacity: 0.8, pointerEvents: 'none' }}>
+              <div style={{ position: 'absolute', right: 20, bottom: -4, opacity: 0.8, pointerEvents: 'none', zIndex: 2 }}>
                 {landscapeElement}
               </div>
 
-              <div style={{ position: 'relative', zIndex: 2 }}>
+              <div style={{ position: 'relative', zIndex: 3 }}>
                 <span style={{ fontSize: '0.7rem', fontWeight: 800, color: territory.color, textTransform: 'uppercase', letterSpacing: 0.8 }}>
                   TERRITÓRIO {territory.testament === 'OLD' ? 'ANTIGO' : 'NOVO'} TESTAMENTO • {territory.chaptersCount} CAPÍTULOS
                 </span>
-                <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: isMobile ? '1.3rem' : '1.6rem', fontWeight: 800, color: '#ffffff', marginTop: 2 }}>
+                <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: isMobile ? '1.35rem' : '1.7rem', fontWeight: 800, color: '#ffffff', marginTop: 2, textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
                   {territory.name}
                 </h3>
-                <p style={{ color: '#d1d5db', fontSize: isMobile ? '0.78rem' : '0.85rem', marginTop: 2 }}>
+                <p style={{ color: '#e5e7eb', fontSize: isMobile ? '0.8rem' : '0.88rem', marginTop: 2, textShadow: '0 1px 4px rgba(0,0,0,0.8)', maxWidth: 460 }}>
                   {territory.description}
                 </p>
               </div>
@@ -286,14 +312,16 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
                 width: isMobile ? 44 : 54,
                 height: isMobile ? 44 : 54,
                 borderRadius: 14,
-                background: `${territory.color}30`,
+                background: `${territory.color}40`,
+                border: '1px solid rgba(255,255,255,0.2)',
+                backdropFilter: 'blur(8px)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: isMobile ? '1.4rem' : '1.8rem',
                 flexShrink: 0,
                 position: 'relative',
-                zIndex: 2
+                zIndex: 3
               }}>
                 {territory.icon}
               </div>
@@ -486,6 +514,7 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
           chapterNum={previewChapter.chapterNum}
           title={previewChapter.title}
           historicalContext={previewChapter.historicalContext}
+          themeImage={previewChapter.themeImage}
           isCompleted={previewChapter.isCompleted}
           isAvailable={previewChapter.isAvailable}
           onStartLesson={() => {

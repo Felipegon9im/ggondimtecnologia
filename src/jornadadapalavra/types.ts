@@ -30,6 +30,7 @@ export interface BibleTerritory {
   icon: string;
   color: string;
   description: string;
+  themeImage?: string;
 }
 
 export interface BibleVerse {
@@ -43,6 +44,7 @@ export interface ChapterContext {
   chapterNumber: number;
   title: string;
   historicalContext: string;
+  themeImage?: string;
   keyCharacters: string[];
   importantEvents: string[];
   curiosities: string;

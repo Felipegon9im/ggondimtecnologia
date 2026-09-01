@@ -107,7 +107,7 @@ export const ChapterStudyModal: React.FC<ChapterStudyModalProps> = ({
         </button>
 
         {/* Modal Header */}
-        <div style={{ marginBottom: 16 }}>
+        <div style={{ marginBottom: 14 }}>
           <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#fbbf24', textTransform: 'uppercase', letterSpacing: 0.8 }}>
             📖 ESTUDO BÍBLICO DA PEREGRINAÇÃO
           </span>
@@ -115,6 +115,31 @@ export const ChapterStudyModal: React.FC<ChapterStudyModalProps> = ({
             {contextData.title}
           </h2>
         </div>
+
+        {/* Illustrative Theme Artwork Header Banner */}
+        {contextData.themeImage && (
+          <div style={{
+            position: 'relative',
+            height: isMobile ? 120 : 160,
+            borderRadius: 14,
+            backgroundImage: `url(${contextData.themeImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            marginBottom: 16,
+            overflow: 'hidden',
+            border: '1px solid rgba(245, 158, 11, 0.4)',
+            boxShadow: '0 4px 15px rgba(0,0,0,0.5)'
+          }}>
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'linear-gradient(180deg, rgba(13, 9, 20, 0.1) 0%, rgba(13, 9, 20, 0.85) 100%)'
+            }} />
+          </div>
+        )}
 
         {/* Tabs Bar (Horizontally scrollable) */}
         <div style={{
