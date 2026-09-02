@@ -275,7 +275,7 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   animation: 'kenBurnsZoom 20s infinite alternate ease-in-out',
-                  filter: 'brightness(0.6)',
+                  filter: 'brightness(0.85)',
                   zIndex: 0
                 }} />
               )}
@@ -287,7 +287,7 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
                 left: 0,
                 right: 0,
                 bottom: 0,
-                background: `linear-gradient(90deg, rgba(13, 9, 20, 0.9) 0%, rgba(13, 9, 20, 0.4) 100%)`,
+                background: `linear-gradient(90deg, rgba(15, 10, 25, 0.75) 0%, rgba(15, 10, 25, 0.25) 100%)`,
                 zIndex: 1
               }} />
 

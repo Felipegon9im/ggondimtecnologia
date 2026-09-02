@@ -33,7 +33,7 @@ export const BIBLE_TERRITORIES: BibleTerritory[] = (ALL_BOOKS_DATA as RawBookMet
   let themeImage = '/gospels_jesus.jpg';
 
   if (book.id === 'gn') {
-    themeImage = '/genesis_creation.png';
+    themeImage = '/genesis_creation.jpg';
   } else if (book.id === 'ex') {
     themeImage = '/exodus_redsea.jpg';
   } else if (['lv', 'nm', 'dt'].includes(book.id)) {
