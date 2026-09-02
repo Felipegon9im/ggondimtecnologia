@@ -34,18 +34,29 @@ export const BIBLE_TERRITORIES: BibleTerritory[] = (ALL_BOOKS_DATA as RawBookMet
 
   if (book.id === 'gn') {
     themeImage = '/genesis_creation.png';
-  } else if (['ex', 'lv', 'nm', 'dt'].includes(book.id)) {
+  } else if (book.id === 'ex') {
     themeImage = '/exodus_redsea.jpg';
-  } else if (['js', 'jz', 'rt', '1sm', '2sm', '1rs', '2rs', '1ch', '2ch'].includes(book.id)) {
+  } else if (['lv', 'nm', 'dt'].includes(book.id)) {
+    themeImage = '/sinai_tablets.jpg';
+  } else if (['js', 'jz', 'rt'].includes(book.id)) {
+    themeImage = '/jericho_walls.jpg';
+  } else if (['1sm', '2sm'].includes(book.id)) {
     themeImage = '/david_goliath.jpg';
-  } else if (['sl', 'pv', 'ec', 'ct', 'jb', 'job'].includes(book.id)) {
+  } else if (['1rs', '2rs', '1ch', '2ch', 'ezr', 'ne', 'est'].includes(book.id)) {
+    themeImage = '/solomon_temple.jpg';
+  } else if (['sl', 'pv', 'ec', 'ct', 'jb', 'job', 'ps', 'prv'].includes(book.id)) {
     themeImage = '/psalms_worship.jpg';
-  } else if (['is', 'jr', 'lm', 'ez', 'dn', 'hos', 'joe', 'amo', 'oba', 'jon', 'mic', 'nah', 'hab', 'zep', 'hag', 'zec', 'mal'].includes(book.id)) {
+  } else if (['dn', 'daniel'].includes(book.id)) {
+    themeImage = '/daniel_lions.jpg';
+  } else if (['is', 'jr', 'lm', 'ez', 'hos', 'joe', 'amo', 'oba', 'jon', 'mic', 'nah', 'hab', 'zep', 'hag', 'zec', 'mal'].includes(book.id)) {
     themeImage = '/noah_ark.jpg';
   } else if (['mt', 'mc', 'lc', 'jo', 'at'].includes(book.id)) {
     themeImage = '/gospels_jesus.jpg';
   } else if (['ap', 'rev'].includes(book.id)) {
     themeImage = '/new_jerusalem.jpg';
+  } else {
+    // Epistles and Letters (Romanos, Coríntios, Gálatas, Efésios, Hebreus, etc.)
+    themeImage = '/epistles_paul.jpg';
   }
 
   if (book.testament === 'OLD') {
