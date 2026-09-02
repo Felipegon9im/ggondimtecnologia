@@ -4,6 +4,7 @@ import { BIBLE_TERRITORIES, TOTAL_BIBLE_CHAPTERS, BibleJourneyService } from '..
 import { audioService } from '../services/audioService';
 import { CloudSVG, TreeSVG, PalmTreeSVG, CampfireSVG, PilgrimMascotSVG } from './BibleWorldSVG';
 import { LessonPreviewModal } from './LessonPreviewModal';
+import { Parallax3DCard } from './Parallax3DCard';
 import { Check, Lock, Gift, Heart, Sparkles, Search, BookOpen, Brain } from 'lucide-react';
 
 interface BibleJourneyPathViewProps {
@@ -86,52 +87,54 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 780, margin: '0 auto', width: '100%', position: 'relative' }}>
-      {/* Header Banner: Overall Bible Journey Progress */}
-      <div className="glass-card" style={{
-        background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(124, 58, 237, 0.25))',
-        border: '2px solid rgba(245, 158, 11, 0.4)',
-        padding: isMobile ? 16 : 24,
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        {/* Floating background clouds */}
-        <CloudSVG style={{ position: 'absolute', top: 10, right: 20, opacity: 0.6, animation: 'cloudFloat 12s ease-in-out infinite' }} />
-        <CloudSVG style={{ position: 'absolute', bottom: 5, left: 15, opacity: 0.4, animation: 'cloudFloat 18s ease-in-out infinite reverse' }} />
+      {/* Header Banner: Overall Bible Journey Progress with 3D Parallax Tilt */}
+      <Parallax3DCard maxTiltDeg={8} scaleOnHover={1.015}>
+        <div className="glass-card" style={{
+          background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(124, 58, 237, 0.25))',
+          border: '2px solid rgba(245, 158, 11, 0.4)',
+          padding: isMobile ? 16 : 24,
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          {/* Floating background clouds */}
+          <CloudSVG style={{ position: 'absolute', top: 10, right: 20, opacity: 0.6, animation: 'cloudFloat 12s ease-in-out infinite' }} />
+          <CloudSVG style={{ position: 'absolute', bottom: 5, left: 15, opacity: 0.4, animation: 'cloudFloat 18s ease-in-out infinite reverse' }} />
 
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10, marginBottom: 12, position: 'relative', zIndex: 2 }}>
-          <div>
-            <span style={{ fontSize: isMobile ? '0.7rem' : '0.8rem', color: '#fbbf24', fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.8 }}>
-              🗺️ MUNDO DE AVENTURA BÍBLICA • GÊNESIS A APOCALIPSE
-            </span>
-            <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: isMobile ? '1.3rem' : '1.6rem', fontWeight: 800, color: '#ffffff', marginTop: 2 }}>
-              Jornada na Palavra de Deus
-            </h2>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10, marginBottom: 12, position: 'relative', zIndex: 2 }}>
+            <div>
+              <span style={{ fontSize: isMobile ? '0.7rem' : '0.8rem', color: '#fbbf24', fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.8 }}>
+                🗺️ MUNDO DE AVENTURA BÍBLICA • GÊNESIS A APOCALIPSE
+              </span>
+              <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: isMobile ? '1.3rem' : '1.6rem', fontWeight: 800, color: '#ffffff', marginTop: 2 }}>
+                Jornada na Palavra de Deus
+              </h2>
+            </div>
+
+            <div style={{
+              background: 'rgba(0,0,0,0.5)',
+              padding: isMobile ? '6px 12px' : '8px 16px',
+              borderRadius: 14,
+              border: '1px solid rgba(245, 158, 11, 0.4)',
+              color: '#fbbf24',
+              fontFamily: 'Outfit, sans-serif',
+              fontWeight: 800,
+              fontSize: isMobile ? '0.95rem' : '1.1rem'
+            }}>
+              {progressInfo.percentage}% CONCLUÍDO
+            </div>
           </div>
 
-          <div style={{
-            background: 'rgba(0,0,0,0.5)',
-            padding: isMobile ? '6px 12px' : '8px 16px',
-            borderRadius: 14,
-            border: '1px solid rgba(245, 158, 11, 0.4)',
-            color: '#fbbf24',
-            fontFamily: 'Outfit, sans-serif',
-            fontWeight: 800,
-            fontSize: isMobile ? '0.95rem' : '1.1rem'
-          }}>
-            {progressInfo.percentage}% CONCLUÍDO
+          {/* Progress Bar */}
+          <div className="progress-bar-container" style={{ height: 12, marginBottom: 10, position: 'relative', zIndex: 2 }}>
+            <div className="progress-bar-fill" style={{ width: `${progressInfo.percentage}%` }} />
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: isMobile ? '0.78rem' : '0.85rem', color: '#d1d5db', fontWeight: 600, flexWrap: 'wrap', gap: 4, position: 'relative', zIndex: 2 }}>
+            <span>Capítulos lidos: <strong>{progressInfo.totalCompleted}</strong> de {TOTAL_BIBLE_CHAPTERS}</span>
+            <span>66 Livros da Bíblia</span>
           </div>
         </div>
-
-        {/* Progress Bar */}
-        <div className="progress-bar-container" style={{ height: 12, marginBottom: 10, position: 'relative', zIndex: 2 }}>
-          <div className="progress-bar-fill" style={{ width: `${progressInfo.percentage}%` }} />
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: isMobile ? '0.78rem' : '0.85rem', color: '#d1d5db', fontWeight: 600, flexWrap: 'wrap', gap: 4, position: 'relative', zIndex: 2 }}>
-          <span>Capítulos lidos: <strong>{progressInfo.totalCompleted}</strong> de {TOTAL_BIBLE_CHAPTERS}</span>
-          <span>66 Livros da Bíblia</span>
-        </div>
-      </div>
+      </Parallax3DCard>
 
       {/* Out of Hearts Warning if hearts <= 0 */}
       {profile.stats.hearts <= 0 && (
@@ -251,81 +254,83 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
 
         return (
           <div key={territory.id} style={{ display: 'flex', flexDirection: 'column', gap: 16, position: 'relative' }}>
-            {/* Territory Header Banner with Cinematic Illustrative Theme Artwork */}
-            <div className="glass-card" style={{
-              position: 'relative',
-              overflow: 'hidden',
-              borderLeft: `6px solid ${territory.color}`,
-              padding: isMobile ? '18px' : '24px 28px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: 12,
-              minHeight: isMobile ? 135 : 160
-            }}>
-              {/* Background Theme Image with Ken Burns Zoom */}
-              {territory.themeImage && (
+            {/* Territory Header Banner with 3D Parallax Tilt & Cinematic Illustrative Theme Artwork */}
+            <Parallax3DCard maxTiltDeg={10} scaleOnHover={1.02}>
+              <div className="glass-card" style={{
+                position: 'relative',
+                overflow: 'hidden',
+                borderLeft: `6px solid ${territory.color}`,
+                padding: isMobile ? '18px' : '24px 28px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 12,
+                minHeight: isMobile ? 135 : 160
+              }}>
+                {/* Background Theme Image with Ken Burns Zoom */}
+                {territory.themeImage && (
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundImage: `url(${territory.themeImage})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    animation: 'kenBurnsZoom 20s infinite alternate ease-in-out',
+                    filter: 'brightness(0.85)',
+                    zIndex: 0
+                  }} />
+                )}
+
+                {/* Gradient Overlay for Typography High Contrast */}
                 <div style={{
                   position: 'absolute',
                   top: 0,
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  backgroundImage: `url(${territory.themeImage})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  animation: 'kenBurnsZoom 20s infinite alternate ease-in-out',
-                  filter: 'brightness(0.85)',
-                  zIndex: 0
+                  background: `linear-gradient(90deg, rgba(15, 10, 25, 0.75) 0%, rgba(15, 10, 25, 0.25) 100%)`,
+                  zIndex: 1
                 }} />
-              )}
 
-              {/* Gradient Overlay for Typography High Contrast */}
-              <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: `linear-gradient(90deg, rgba(15, 10, 25, 0.75) 0%, rgba(15, 10, 25, 0.25) 100%)`,
-                zIndex: 1
-              }} />
+                {/* Background SVG Scenery Objects */}
+                <div style={{ position: 'absolute', right: 20, bottom: -4, opacity: 0.8, pointerEvents: 'none', zIndex: 2 }}>
+                  {landscapeElement}
+                </div>
 
-              {/* Background SVG Scenery Objects */}
-              <div style={{ position: 'absolute', right: 20, bottom: -4, opacity: 0.8, pointerEvents: 'none', zIndex: 2 }}>
-                {landscapeElement}
+                <div style={{ position: 'relative', zIndex: 3 }}>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 800, color: territory.color, textTransform: 'uppercase', letterSpacing: 0.8 }}>
+                    TERRITÓRIO {territory.testament === 'OLD' ? 'ANTIGO' : 'NOVO'} TESTAMENTO • {territory.chaptersCount} CAPÍTULOS
+                  </span>
+                  <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: isMobile ? '1.35rem' : '1.7rem', fontWeight: 800, color: '#ffffff', marginTop: 2, textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
+                    {territory.name}
+                  </h3>
+                  <p style={{ color: '#e5e7eb', fontSize: isMobile ? '0.8rem' : '0.88rem', marginTop: 2, textShadow: '0 1px 4px rgba(0,0,0,0.8)', maxWidth: 460 }}>
+                    {territory.description}
+                  </p>
+                </div>
+
+                <div style={{
+                  width: isMobile ? 44 : 54,
+                  height: isMobile ? 44 : 54,
+                  borderRadius: 14,
+                  background: `${territory.color}40`,
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  backdropFilter: 'blur(8px)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: isMobile ? '1.4rem' : '1.8rem',
+                  flexShrink: 0,
+                  position: 'relative',
+                  zIndex: 3
+                }}>
+                  {territory.icon}
+                </div>
               </div>
-
-              <div style={{ position: 'relative', zIndex: 3 }}>
-                <span style={{ fontSize: '0.7rem', fontWeight: 800, color: territory.color, textTransform: 'uppercase', letterSpacing: 0.8 }}>
-                  TERRITÓRIO {territory.testament === 'OLD' ? 'ANTIGO' : 'NOVO'} TESTAMENTO • {territory.chaptersCount} CAPÍTULOS
-                </span>
-                <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: isMobile ? '1.35rem' : '1.7rem', fontWeight: 800, color: '#ffffff', marginTop: 2, textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
-                  {territory.name}
-                </h3>
-                <p style={{ color: '#e5e7eb', fontSize: isMobile ? '0.8rem' : '0.88rem', marginTop: 2, textShadow: '0 1px 4px rgba(0,0,0,0.8)', maxWidth: 460 }}>
-                  {territory.description}
-                </p>
-              </div>
-
-              <div style={{
-                width: isMobile ? 44 : 54,
-                height: isMobile ? 44 : 54,
-                borderRadius: 14,
-                background: `${territory.color}40`,
-                border: '1px solid rgba(255,255,255,0.2)',
-                backdropFilter: 'blur(8px)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: isMobile ? '1.4rem' : '1.8rem',
-                flexShrink: 0,
-                position: 'relative',
-                zIndex: 3
-              }}>
-                {territory.icon}
-              </div>
-            </div>
+            </Parallax3DCard>
 
             {/* Chapters Trail Nodes & Micro-Scenery Objects */}
             <div style={{
