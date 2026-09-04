@@ -254,83 +254,94 @@ export const BibleJourneyPathView: React.FC<BibleJourneyPathViewProps> = ({
 
         return (
           <div key={territory.id} style={{ display: 'flex', flexDirection: 'column', gap: 16, position: 'relative' }}>
-            {/* Territory Header Banner with 3D Parallax Tilt & Cinematic Illustrative Theme Artwork */}
-            <Parallax3DCard maxTiltDeg={10} scaleOnHover={1.02}>
-              <div className="glass-card" style={{
-                position: 'relative',
-                overflow: 'hidden',
-                borderLeft: `6px solid ${territory.color}`,
-                padding: isMobile ? '18px' : '24px 28px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: 12,
-                minHeight: isMobile ? 135 : 160
-              }}>
-                {/* Background Theme Image with Ken Burns Zoom */}
-                {territory.themeImage && (
+            {/* Territory Header Banner with 3D Parallax Tilt & Cinematic Illustrative Theme Artwork - Sticky on Scroll */}
+            <div style={{
+              position: 'sticky',
+              top: isMobile ? 54 : 64,
+              zIndex: 30,
+              paddingTop: 4,
+              paddingBottom: 4
+            }}>
+              <Parallax3DCard maxTiltDeg={10} scaleOnHover={1.02}>
+                <div className="glass-card" style={{
+                  position: 'relative',
+                  overflow: 'hidden',
+                  borderLeft: `6px solid ${territory.color}`,
+                  padding: isMobile ? '16px' : '20px 24px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: 12,
+                  minHeight: isMobile ? 120 : 140,
+                  background: 'rgba(20, 14, 35, 0.88)',
+                  backdropFilter: 'blur(20px)',
+                  boxShadow: '0 12px 30px rgba(0, 0, 0, 0.65)'
+                }}>
+                  {/* Background Theme Image with Ken Burns Zoom */}
+                  {territory.themeImage && (
+                    <div style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      backgroundImage: `url(${territory.themeImage})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      animation: 'kenBurnsZoom 20s infinite alternate ease-in-out',
+                      filter: 'brightness(0.85)',
+                      zIndex: 0
+                    }} />
+                  )}
+
+                  {/* Gradient Overlay for Typography High Contrast */}
                   <div style={{
                     position: 'absolute',
                     top: 0,
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    backgroundImage: `url(${territory.themeImage})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    animation: 'kenBurnsZoom 20s infinite alternate ease-in-out',
-                    filter: 'brightness(0.85)',
-                    zIndex: 0
+                    background: `linear-gradient(90deg, rgba(15, 10, 25, 0.82) 0%, rgba(15, 10, 25, 0.4) 100%)`,
+                    zIndex: 1
                   }} />
-                )}
 
-                {/* Gradient Overlay for Typography High Contrast */}
-                <div style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  background: `linear-gradient(90deg, rgba(15, 10, 25, 0.75) 0%, rgba(15, 10, 25, 0.25) 100%)`,
-                  zIndex: 1
-                }} />
+                  {/* Background SVG Scenery Objects */}
+                  <div style={{ position: 'absolute', right: 20, bottom: -4, opacity: 0.8, pointerEvents: 'none', zIndex: 2 }}>
+                    {landscapeElement}
+                  </div>
 
-                {/* Background SVG Scenery Objects */}
-                <div style={{ position: 'absolute', right: 20, bottom: -4, opacity: 0.8, pointerEvents: 'none', zIndex: 2 }}>
-                  {landscapeElement}
+                  <div style={{ position: 'relative', zIndex: 3 }}>
+                    <span style={{ fontSize: '0.7rem', fontWeight: 800, color: territory.color, textTransform: 'uppercase', letterSpacing: 0.8 }}>
+                      TERRITÓRIO {territory.testament === 'OLD' ? 'ANTIGO' : 'NOVO'} TESTAMENTO • {territory.chaptersCount} CAPÍTULOS
+                    </span>
+                    <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: isMobile ? '1.35rem' : '1.7rem', fontWeight: 800, color: '#ffffff', marginTop: 2, textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
+                      {territory.name}
+                    </h3>
+                    <p style={{ color: '#e5e7eb', fontSize: isMobile ? '0.8rem' : '0.88rem', marginTop: 2, textShadow: '0 1px 4px rgba(0,0,0,0.8)', maxWidth: 460 }}>
+                      {territory.description}
+                    </p>
+                  </div>
+
+                  <div style={{
+                    width: isMobile ? 44 : 54,
+                    height: isMobile ? 44 : 54,
+                    borderRadius: 14,
+                    background: `${territory.color}40`,
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    backdropFilter: 'blur(8px)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: isMobile ? '1.4rem' : '1.8rem',
+                    flexShrink: 0,
+                    position: 'relative',
+                    zIndex: 3
+                  }}>
+                    {territory.icon}
+                  </div>
                 </div>
-
-                <div style={{ position: 'relative', zIndex: 3 }}>
-                  <span style={{ fontSize: '0.7rem', fontWeight: 800, color: territory.color, textTransform: 'uppercase', letterSpacing: 0.8 }}>
-                    TERRITÓRIO {territory.testament === 'OLD' ? 'ANTIGO' : 'NOVO'} TESTAMENTO • {territory.chaptersCount} CAPÍTULOS
-                  </span>
-                  <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: isMobile ? '1.35rem' : '1.7rem', fontWeight: 800, color: '#ffffff', marginTop: 2, textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
-                    {territory.name}
-                  </h3>
-                  <p style={{ color: '#e5e7eb', fontSize: isMobile ? '0.8rem' : '0.88rem', marginTop: 2, textShadow: '0 1px 4px rgba(0,0,0,0.8)', maxWidth: 460 }}>
-                    {territory.description}
-                  </p>
-                </div>
-
-                <div style={{
-                  width: isMobile ? 44 : 54,
-                  height: isMobile ? 44 : 54,
-                  borderRadius: 14,
-                  background: `${territory.color}40`,
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  backdropFilter: 'blur(8px)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: isMobile ? '1.4rem' : '1.8rem',
-                  flexShrink: 0,
-                  position: 'relative',
-                  zIndex: 3
-                }}>
-                  {territory.icon}
-                </div>
-              </div>
-            </Parallax3DCard>
+              </Parallax3DCard>
+            </div>
 
             {/* Chapters Trail Nodes & Micro-Scenery Objects */}
             <div style={{

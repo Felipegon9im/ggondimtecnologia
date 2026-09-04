@@ -35,7 +35,7 @@
 
 html, body {
   width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
@@ -54,7 +54,7 @@ body {
   display: flex;
   flex-direction: column;
   background: radial-gradient(circle at 50% 0%, #2e1047 0%, #0d0914 75%);
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 .main-content {
