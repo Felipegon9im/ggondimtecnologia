@@ -17,6 +17,7 @@ export default defineConfig({
         ferramentas: resolve(__dirname, 'ferramentas.html'),
         logicanacabeca: resolve(__dirname, 'logicanacabeca.html'),
         jornadadapalavra: resolve(__dirname, 'jornadadapalavra.html'),
+        louvorpuzzle: resolve(__dirname, 'louvorpuzzle.html'),
       }
     }
   }
